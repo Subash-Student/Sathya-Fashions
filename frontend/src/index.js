@@ -3,14 +3,17 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux'
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import {BrowserRouter} from "react-router-dom"
 import reportWebVitals from './reportWebVitals';
 import store from './redux/store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <BrowserRouter >
   <Provider store={store}>
     <App />
   </Provider>
+  </BrowserRouter>
 );
 
 // If you want your app to work offline and load faster, you can change
