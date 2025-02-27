@@ -24,6 +24,42 @@ const orders = [
     orderStatus: "Processing",
     reminderDays: 3,
   },
+  {
+    id: "12345",
+    phone: "9876543210",
+    name: "John Doe",
+    orderDate: "2024-02-12",
+    deliveryDate: "2024-02-15",
+    amount: 2500,
+    orderStatus: "Completed",
+    paymentStatus: "Paid",
+    reminderDays: 3,
+
+  },
+  {
+    id: "12346",
+    name: "Jane Smith",
+    orderDate: "2024-02-14",
+    deliveryDate: "2024-02-20",
+    amount: 1800,
+    orderStatus: "In Progress",
+    paymentStatus: "Pending",
+    phone: "9876543210",
+    reminderDays: 3,
+
+  },
+  {
+    id: "12347",
+    name: "Alice Johnson",
+    orderDate: "2024-02-10",
+    deliveryDate: "2024-02-18",
+    amount: 3000,
+    orderStatus: "Completed",
+    paymentStatus: "Advance",
+    phone: "9876543210",
+    reminderDays: 3,
+
+  },
 ];
 
 const OrderDetails = () => {
@@ -36,28 +72,29 @@ const OrderDetails = () => {
   return (
     <Box sx={{ p: 3, background: "#f9f9f9", minHeight: "100vh" }}>
       {/* Header with Back Button & Edit Icon */}
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Button startIcon={<ArrowBack />} onClick={() => navigate(-1)}>
-          Back
-        </Button>
-        <IconButton color="primary" onClick={() => navigate(`/edit-order/${id}`)}>
-          <Edit />
-        </IconButton>
-      </Stack>
+      
 
       {/* Order Details Header */}
-      <Typography variant="h5" sx={{ fontWeight: "bold", mt: 2 }}>
+      <Typography variant="h5" textAlign="center" sx={{ fontWeight: "bold", mt: 2 }}>
         🛍️ Order Details
       </Typography>
 
       {/* Order Info Card */}
       <Card sx={{ p: 3, mt: 3, borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+      
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <div>
+      <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
           {order.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           📞 {order.phone}
         </Typography>
+        </div>
+        <IconButton color="primary" onClick={() => navigate(`/edit-order/${id}`)}>
+          <Edit />
+        </IconButton>
+      </Stack>
 
         <Divider sx={{ my: 2 }} />
 
