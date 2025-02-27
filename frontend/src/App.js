@@ -6,10 +6,12 @@ import PaymentDetails from './pages/PaymentDetailsPage'
 import NewOrderPage from './pages/NewOrderPage'
 import OrderListPage from './pages/OrderListPage'
 import PaymentDetailsPage from './pages/PaymentDetailsPage'
+import LoginPage from './pages/LoginPage'
 const App = () => {
   return (
     <Routes>
       <Route path='/' element={<DashBoard />}/>
+      <Route path='/login' element={<LoginPage />}/>
       <Route path="/order/:id" element={<OrderDetailsPage />} />
       <Route path="/orders" element={<OrderListPage />} />
       <Route path="/newOrder" element={<NewOrderPage />} />
