@@ -26,7 +26,7 @@ const Navbar = () => {
       <AppBar position="sticky" sx={{ background: "#5d2f2f",borderRadius:"0px 0px 8px 8px" }}>
         <Toolbar >
           {/* Logo and Shop Name */}
-          <img src={"logo2.png"} onClick={()=>navigate("/")} alt="Tailor Shop" style={{ height: 55, margin: 5 }} />
+          <img src={"logo2.png"} onClick={()=>navigate("/dashBoard")} alt="Tailor Shop" style={{ height: 55, margin: 5 }} />
           <Typography variant="h6"  sx={{ flexGrow: 1 }}>
             Sathya Fashions
           </Typography>
@@ -52,7 +52,7 @@ const Navbar = () => {
       }}
     >
       <List>
-        <ListItemButton onClick={() => handleNavigation("/")}>
+        <ListItemButton onClick={() => handleNavigation("/dashBoard")}>
           <ListItemIcon>
             <DashboardIcon color="primary" />
           </ListItemIcon>
