@@ -2,9 +2,10 @@ import React from 'react'
 import {Routes, Route} from "react-router-dom"
 import DashBoard from './pages/DashBoard'
 import OrderDetailsPage from './pages/OrderDetailsPage'
-import PaymentDetails from './pages/PaymentDetails'
+import PaymentDetails from './pages/PaymentDetailsPage'
 import NewOrderPage from './pages/NewOrderPage'
 import OrderListPage from './pages/OrderListPage'
+import PaymentDetailsPage from './pages/PaymentDetailsPage'
 const App = () => {
   return (
     <Routes>
@@ -12,7 +13,7 @@ const App = () => {
       <Route path="/order/:id" element={<OrderDetailsPage />} />
       <Route path="/orders" element={<OrderListPage />} />
       <Route path="/newOrder" element={<NewOrderPage />} />
-      <Route path="/paymentDetails" element={<PaymentDetails />} />
+      <Route path="/paymentDetails" element={<PaymentDetailsPage />} />
     </Routes>
   )
 }

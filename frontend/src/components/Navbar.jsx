@@ -6,7 +6,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import PaymentIcon from "@mui/icons-material/Payment";
 import AddBoxIcon from "@mui/icons-material/AddBox";
-import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -16,20 +16,23 @@ const Navbar = () => {
      setOpen(false);
      navigate(path)
   }
-
+  const handleLogout = () => {
+   
+    navigate("/login")
+  };
   return (
     <>
       {/* Top App Bar */}
       <AppBar position="sticky" sx={{ background: "#5d2f2f",borderRadius:"0px 0px 8px 8px" }}>
-        <Toolbar onClick={()=>navigate("/")}>
+        <Toolbar >
           {/* Logo and Shop Name */}
-          <img src={"logo2.png"} alt="Tailor Shop" style={{ height: 55, margin: 5 }} />
+          <img src={"logo2.png"} onClick={()=>navigate("/")} alt="Tailor Shop" style={{ height: 55, margin: 5 }} />
           <Typography variant="h6"  sx={{ flexGrow: 1 }}>
             Sathya Fashions
           </Typography>
 
           {/* Hamburger Menu Button */}
-          <IconButton style={{width:40,height:40,borderRadius:"8px",backgroundColor:"F5F5F5"}} color="inherit" onClick={() => setOpen(true)}>
+          <IconButton style={{width:40,height:40,borderRadius:"8px",backgroundColor:"#5803038b"}} color="inherit" onClick={() => setOpen(true)}>
             <MenuIcon />
           </IconButton>
         </Toolbar>
@@ -77,12 +80,12 @@ const Navbar = () => {
           <ListItemText primary="New Order" />
         </ListItemButton>
 
-        <ListItemButton onClick={() => handleNavigation("/settings")}>
-          <ListItemIcon>
-            <SettingsIcon sx={{ color: "#1976D2" }} />
-          </ListItemIcon>
-          <ListItemText primary="Settings" />
-        </ListItemButton>
+        <ListItemButton onClick={handleLogout}>
+        <ListItemIcon>
+          <LogoutIcon sx={{ color: "#D32F2F" }} /> {/* Logout icon with custom color */}
+        </ListItemIcon>
+        <ListItemText primary="Logout" />
+      </ListItemButton>
       </List>
     </Drawer>
     </>
