@@ -20,11 +20,11 @@ const Navbar = () => {
   return (
     <>
       {/* Top App Bar */}
-      <AppBar position="sticky" sx={{ background: "#673AB7" }}>
+      <AppBar position="sticky" sx={{ background: "#5d2f2f" }}>
         <Toolbar>
           {/* Logo and Shop Name */}
-          <img src={"logo.png"} alt="Tailor Shop" style={{ height: 40, marginRight: 5 }} />
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <img src={"logo2.png"} alt="Tailor Shop" style={{ height: 55, margin: 5 }} />
+          <Typography variant="h6"  sx={{ flexGrow: 1 }}>
             Sathya Fashions
           </Typography>
 
@@ -70,7 +70,7 @@ const Navbar = () => {
           <ListItemText primary="Payment Details" />
         </ListItemButton>
 
-        <ListItemButton onClick={() => handleNavigation("/newOrders")}>
+        <ListItemButton onClick={() => handleNavigation("/newOrder")}>
           <ListItemIcon>
             <AddBoxIcon sx={{ color: "#4CAF50" }} />
           </ListItemIcon>
