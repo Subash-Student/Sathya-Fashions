@@ -23,7 +23,7 @@ const Navbar = () => {
   return (
     <>
       {/* Top App Bar */}
-      <AppBar position="sticky" sx={{ background: "#5d2f2f",borderRadius:"0px 0px 8px 8px" }}>
+      <AppBar  position="sticky" sx={{ background: "#5d2f2f",borderRadius:"0px 0px 8px 8px" }}>
         <Toolbar >
           {/* Logo and Shop Name */}
           <img src={"logo2.png"} onClick={()=>navigate("/dashBoard")} alt="Tailor Shop" style={{ height: 55, margin: 5 }} />

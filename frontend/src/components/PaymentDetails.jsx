@@ -17,24 +17,26 @@ import {
 import FilterListIcon from "@mui/icons-material/FilterList";
 import SearchIcon from "@mui/icons-material/Search";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import {
-    AccessTime, CheckCircle, 
-    AssignmentTurnedIn,  PendingActions
-  } from "@mui/icons-material";
+import {CheckCircle, } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
   import CancelIcon from '@mui/icons-material/Cancel';
   import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { setFilterOptions } from "../redux/orderSlice";
 
 
 const PaymentDetailsPage = () => {
   const [filterOpen, setFilterOpen] = useState(false);
-  const [filters, setFilters] = useState({ date: "", status: "" });
   const [searchTerm, setSearchTerm] = useState("");
 
-  const toggleFilter = () => setFilterOpen(!filterOpen);
-  const handleFilterChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
+  const dispatch = useDispatch();
+  const filters = useSelector((state) => state.paymentFilterOptions.filterOptions);
 
+  
+  const handleFilterChange = (e) => {
+    dispatch(setFilterOptions({ ...filters, [e.target.name]: e.target.value }));
+  }
+  
+  const toggleFilter = () => setFilterOpen(!filterOpen);
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -119,11 +121,11 @@ const PaymentDetailsPage = () => {
 
   return (
     <div>
-      <Typography variant="h5" sx={{ textAlign: "center", mt: 2, fontWeight: "bold" }}>
+      <Typography variant="h5" sx={{ textAlign: "center", mt: 1,p:2, fontWeight: "bold" }}>
       💵 Payment Details
       </Typography>
 
-      <Grid container spacing={2} sx={{ padding: 2 }}>
+      <Grid container spacing={2} sx={{ padding: 0 }}>
         <Grid item xs={6} sm={3}>
           <Card sx={{ padding: 2, textAlign: "center" }}>
             <Typography variant="subtitle1">Total</Typography>
@@ -150,21 +152,7 @@ const PaymentDetailsPage = () => {
         </Grid>
       </Grid>
 
-      <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
-        <TextField
-          variant="outlined"
-          placeholder="Search payments..."
-          InputProps={{
-            startAdornment: <SearchIcon sx={{ color: "gray", mr: 1 }} />,
-          }}
-          fullWidth
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-        <IconButton onClick={toggleFilter} sx={{ ml: 1 }}>
-          <FilterListIcon />
-        </IconButton>
-      </div>
+    
 
       {/* Right Sidebar for Filters */}
       <Drawer anchor="right" open={filterOpen} onClose={toggleFilter}>
@@ -197,8 +185,23 @@ const PaymentDetailsPage = () => {
       </Drawer>
 
       {/* Payment History */}
-      <Card sx={{ margin: 2, padding: 1 }}>
-  <Typography variant="h6" textAlign={"center"} style={{margin:"8px"}}>Payment History</Typography>
+      <Card sx={{ mt:1, padding: 1 }}>
+      <div style={{ display: "flex", alignItems: "center", padding: "10px" }}>
+        <TextField
+          variant="outlined"
+          placeholder="Search payments..."
+          InputProps={{
+            startAdornment: <SearchIcon sx={{ color: "gray", mr: 1 }} />,
+          }}
+          fullWidth
+          value={searchTerm}
+          onChange={handleSearchChange}
+        />
+        <IconButton onClick={toggleFilter} sx={{ ml: 1 }}>
+          <FilterListIcon />
+        </IconButton>
+      </div>
+  <Typography variant="h6" textAlign={"center"} style={{margin:"8px"}}>Payment Status</Typography>
    <Divider />
         <CardContent style={{padding:1}}>
           {filteredPayments.length > 0 ? (
@@ -231,7 +234,7 @@ const PaymentDetailsPage = () => {
       </Card>
 
       {/* Payment Analysis Chart */}
-      <Card sx={{ m: 2, p: 0.5 }}>
+      <Card sx={{ m: 0,mt:1, p: 0.5 }}>
   <Typography variant="h6" textAlign="center" style={{margin:"10px"}}>Payment Analysis</Typography>
   <Divider />
 

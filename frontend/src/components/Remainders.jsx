@@ -1,4 +1,4 @@
-import { Card, Typography, Chip, Stack ,IconButton} from "@mui/material";
+import { Card,Box,Divider, Typography, Chip, Stack ,IconButton} from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import WarningIcon from "@mui/icons-material/Warning";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -13,22 +13,43 @@ const Reminders = ({ orders }) => {
 
   // Filter upcoming due orders
   const today = new Date();
-  const upcomingOrders = orders.filter(order => {
+const upcomingOrders = orders
+  .filter(order => {
     const deliveryDate = new Date(order.deliveryDate);
-    return deliveryDate >= today;
-  }).sort((a, b) => new Date(a.deliveryDate) - new Date(b.deliveryDate));
+    const reminderDate = new Date(order.reminderDate);
+    
+    return (
+      deliveryDate >= reminderDate && 
+      reminderDate.toDateString() === today.toDateString()
+    );
+  })
+  .sort((a, b) => new Date(a.deliveryDate) - new Date(b.deliveryDate));
+
+console.log(upcomingOrders);
 
   return (
-    <Card sx={{ mt: 2, p: 2,boxShadow: 'none' }} >
+    <Card sx={{ mt: 2, p: 1,boxShadow: 2 }} >
      
      <Stack direction="row" justifyContent="space-between" alignItems="center">
-     <Typography variant="h6" fontWeight="bold" color="primary">⏰ Reminders</Typography>
+     <Typography variant="h6" fontWeight="bold" color="red">⏰ Today Reminders</Typography>
         <IconButton onClick={()=>navigate("/orders")}>
           <ReadMoreIcon />
         </IconButton>
       </Stack>
 
-
+      {/* <Box m={1} display="flex" alignItems="center">
+                <Box flexGrow={1}>
+                  <Divider />
+                </Box>
+                <Box px={2}>
+                  <Typography variant="body2" color="textSecondary">
+                    Today
+                  </Typography>
+                </Box>
+                <Box flexGrow={1}>
+                  <Divider />
+                </Box>
+              </Box> */}
       
       {upcomingOrders.length > 0 ? (
         upcomingOrders.map(order => {

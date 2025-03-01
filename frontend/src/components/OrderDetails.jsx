@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, Button, Card, CardMedia, Stack, Divider, Chip, IconButton } from "@mui/material";
-import { ArrowBack, Edit, CalendarToday, AttachMoney, Done, Close, AccessTime } from "@mui/icons-material";
+import { Box, Typography, Card, CardMedia, Stack, Divider, Chip, IconButton } from "@mui/material";
+import {  Edit, CalendarToday,  AccessTime } from "@mui/icons-material";
 import CancelIcon from '@mui/icons-material/Cancel';
 import {
    CheckCircle, 

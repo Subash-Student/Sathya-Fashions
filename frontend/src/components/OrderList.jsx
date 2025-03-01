@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Typography,
+  Box,
   Grid,
   IconButton,
   Drawer,
@@ -11,6 +12,7 @@ import {
   MenuItem,
   Select,
   FormControl,
+  Divider,
   InputLabel,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -57,7 +59,7 @@ const OrderList = () => {
     {
       id: "12346",
       name: "Jane Smith",
-      orderDate: "2024-02-14",
+      orderDate: "2024-02-12",
       deliveryDate: "2024-02-20",
       amount: 1800,
       orderStatus: "Pending",
@@ -118,11 +120,12 @@ const OrderList = () => {
     console.log(`Selected option: ${option} for order:`, selectedOrder);
     handleMenuClose();
   };
+let prevDate;
 
   return (
-    <Card sx={{ maxWidth: 600, mx: "auto", mt: 0, p: 2, borderRadius: 2, boxShadow: 3 }}>
-      <Typography variant="h5" fontWeight="bold" textAlign="center">
-        <ReceiptIcon sx={{ color: "#4CAF50", verticalAlign: "middle", mr: 1, paddingBottom: "5px" }} />
+    <Card sx={{ maxWidth: 600, mx: "auto", mt: 0.5, p: 0, borderRadius: 2, boxShadow: 3 }}>
+      <Typography p={1} variant="h5" fontWeight="bold" textAlign="center">
+        <ReceiptIcon sx={{ color: "#4CAF50", verticalAlign: "middle", mr: 1, paddingBottom: "5px", }} />
         Orders
       </Typography>
       <CardContent>
@@ -200,37 +203,61 @@ const OrderList = () => {
           </Drawer>
         </div>
 
-        <Grid container spacing={2} mt={2}>
-          {filteredOrders.map((order) => (
-            <Grid item xs={12} key={order.id}>
-              <Card  sx={{ p: 2, borderRadius: 2, boxShadow: 2, position: "relative" }}>
-                {/* Three-dot icon */}
-                <IconButton
-                  sx={{ position: "absolute", top: 8, right: 8 }}
-                  onClick={(e) => handleMenuClick(e, order)}
-                >
-                  <MoreVertIcon />
-                </IconButton>
+ 
+        <Grid container spacing={0} mt={0}>
+      {filteredOrders.map((order) => {
+        const showDivider = prevDate !== order.orderDate;
+        prevDate = order.orderDate;
 
-                <Typography onClick={()=>navigate(`/order/${order.id}`)} fontWeight="bold">#{order.id} - {order.name}</Typography>
-                <Typography variant="body2">📅 {order.orderDate} → 📦 {order.deliveryDate}</Typography>
-                <Typography variant="body2">
-                  💰 ₹{order.amount} |{" "}
-                  {order.paymentStatus === "Paid"
-                    ? `💵 ${order.paymentStatus}`
-                    : order.paymentStatus === "Advance"
-                    ? `🏷️ ${order.paymentStatus}`
-                    : `❌ ${order.paymentStatus}`}
-                </Typography>
-                <Typography variant="body2">
-                  {order.orderStatus === "Completed"
-                    ? `✅ ${order.orderStatus}`
-                    : `🕒 ${order.orderStatus}`}
-                </Typography>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        return (
+          <Grid item xs={12} key={order.id}>
+            {showDivider && (
+              <Box m={1} display="flex" alignItems="center">
+                <Box flexGrow={1}>
+                  <Divider />
+                </Box>
+                <Box px={2}>
+                  <Typography variant="body2" color="textSecondary">
+                    {order.orderDate}
+                  </Typography>
+                </Box>
+                <Box flexGrow={1}>
+                  <Divider />
+                </Box>
+              </Box>
+            )}
+            <Card sx={{ p: 2, borderRadius: 0, boxShadow: 0, position: "relative" }}>
+              <IconButton
+                sx={{ position: "absolute", right: 8 }}
+                onClick={(e) => handleMenuClick(e, order)}
+              >
+                <MoreVertIcon />
+              </IconButton>
+
+              <Typography onClick={() => navigate(`/order/${order.id}`)} fontWeight="bold">
+                #{order.id} - {order.name}
+              </Typography>
+              <Typography variant="body2">
+                📅 {order.orderDate} → 📦 {order.deliveryDate}
+              </Typography>
+              <Typography variant="body2">
+                💰 ₹{order.amount} |{' '}
+                {order.paymentStatus === 'Paid'
+                  ? `💵 ${order.paymentStatus}`
+                  : order.paymentStatus === 'Advance'
+                  ? `🏷️ ${order.paymentStatus}`
+                  : `❌ ${order.paymentStatus}`}
+              </Typography>
+              <Typography variant="body2">
+                {order.orderStatus === 'Completed'
+                  ? `✅ ${order.orderStatus}`
+                  : `🕒 ${order.orderStatus}`}
+              </Typography>
+            </Card>
+          </Grid>
+        );
+      })}
+    </Grid>
 
         {/* Menu for three-dot options */}
         <Menu
