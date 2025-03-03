@@ -22,8 +22,8 @@ const orderSchema = new mongoose.Schema(
     },
     withLining: { type: Boolean, default: false }, 
     modelDress: { type: Boolean, default: false }, 
-    orderDate: { type: Date, default: Date.now },
-    deliveryDate: { type: Date, required: true },
+    orderDate: { type: String, required: true },
+    deliveryDate:{ type: String, required: true },
     reminderDate: { type: Date }, 
   },
   { timestamps: true }

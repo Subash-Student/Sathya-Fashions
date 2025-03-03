@@ -19,10 +19,40 @@ const DashBoard = () => {
         dispatch(fetchOrders(token));
   },[])
  console.log(orders)
+
+
+ const pendingOrder = orders.filter(order=>{
+   return order.orderStatus === "Pending";
+ })
+
+
+
+ const reminderOrders = orders.filter(order=>{
+   return new Date(order.reminderDate).toISOString().split('T')[0] == new Date().toISOString().split('T')[0];
+ })
+
+
+ const completedOrders = orders.filter(order=>{
+   return order.orderStatus === "Completed";
+ })
+
+
+ const pendingAmount = orders.reduce((sum, order) => {
+  if (order.paymentStatus === "Pending") {
+    sum += order.totalAmount;
+  } else if (order.paymentStatus == "Advance") {
+    sum += (order.totalAmount - order.advanceAmount);
+  }
+  return sum;
+}, 0); 
+
+
+console.log(pendingAmount)
+
   return (
     <>
       <Navbar />
-      <SummaryCards totalOrders={120} pendingOrders={30} completedOrders={90} pendingAmount={15000} />
+      <SummaryCards pendingOrders={pendingOrder.length} reminderOrders={reminderOrders.length} completedOrders={completedOrders.length} pendingAmount={pendingAmount} />
       <Reminders orders={orders} />
       <RecentOrders orders={orders}/>
      <PaymentStatusChart orders={orders}/>

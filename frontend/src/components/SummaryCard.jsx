@@ -6,12 +6,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import CountUp from "react-countup";
 
-const SummaryCards = ({ totalOrders, pendingOrders, completedOrders, pendingAmount }) => {
+const SummaryCards = ({ pendingOrders, reminderOrders, completedOrders, pendingAmount }) => {
+
   const cardData = [
-      { title: "Reminder Orders", value: pendingOrders, icon: <HourglassFullIcon />, color: "#F44336", },
+      { title: "Reminder Orders", value: reminderOrders, icon: <HourglassFullIcon />, color: "#F44336", },
       { title: "Pending Amount", value: `₹${pendingAmount}`, icon: <CurrencyRupeeIcon />, color: "#2196F3" },
       { title: "Completed Orders", value: completedOrders, icon: <CheckCircleIcon />, color: "#4CAF50" },
-      { title: "Pending Orders", value: totalOrders, icon: <ShoppingCartIcon />, color: "#FF9800" },
+      { title: "Pending Orders", value: pendingOrders, icon: <ShoppingCartIcon />, color: "#FF9800" },
   ];
 
   return (
@@ -42,7 +43,7 @@ const SummaryCards = ({ totalOrders, pendingOrders, completedOrders, pendingAmou
       {card.icon}
     </Box>
     <Typography variant="h5" sx={{ fontWeight: "bold", mt: 1 }}>
-      <CountUp start={0} end={card.value} duration={2} />
+    <CountUp start={0} end={typeof card.value === "number" ? card.value : parseFloat(card.value.replace(/[₹,]/g, ""))} duration={2} />
     </Typography>
     <Typography variant="subtitle2" sx={{ fontSize: "0.85rem" }}>
       {card.title}

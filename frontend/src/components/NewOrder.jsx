@@ -64,6 +64,7 @@ const NewOrder = () => {
   // Handle form submission
   const handleSubmit = () => {
     console.log("Form Data Submitted:", formData);
+    console.log(new Date(formData.deliveryDate.$d).toISOString().split('T')[0])
     // You can add your submission logic here (e.g., API call)
   };
 
@@ -131,7 +132,7 @@ const NewOrder = () => {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={formData.lining === "With Lining"}
+                      checked={formData.lining}
                       onChange={(e) =>
                         handleInputChange("lining", e.target.checked ? true : false)
                       }
