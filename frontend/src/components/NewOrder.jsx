@@ -20,7 +20,7 @@ const NewOrder = () => {
     image: null,
     voiceNote: null,
     modelBlouse: false,
-    lining: "Without Lining",
+    lining: false,
     amount: "",
     orderStatus: "Pending",
   });
@@ -133,7 +133,7 @@ const NewOrder = () => {
                     <Checkbox
                       checked={formData.lining === "With Lining"}
                       onChange={(e) =>
-                        handleInputChange("lining", e.target.checked ? "With Lining" : "Without Lining")
+                        handleInputChange("lining", e.target.checked ? true : false)
                       }
                     />
                   }
