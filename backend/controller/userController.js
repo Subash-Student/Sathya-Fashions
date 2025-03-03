@@ -19,23 +19,23 @@ export const logIn = async(req,res)=>{
         const user = await userModal.findOne({mobile});
        
         if(!user){
-            return res.status(404).json({success:false,message:"User Doesn't Exist!"});
+            return res.json({success:false,message:"User Doesn't Exist!"});
         }
     
         const isMatch = await bcrypt.compare(password,user.password);
         
         if(!isMatch){
-            return res.status(401).json({success:false,message:"Password doesn't match"});
+            return res.json({success:false,message:"Password doesn't match"});
         }
     
         const token = createToken(user._id);
         const encryptedToken = setEncryptedToken(token);
        
-        return res.status(200).json({success:true,token:encryptedToken,message:"Successfully loged in"});
+        return res.json({success:true,token:encryptedToken,message:"Successfully loged in"});
     
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ success: false, message: "An error occurred during login. Please try again later." });
+        return res.json({ success: false, message: "An error occurred during login. Please try again later." });
     }
 }
 

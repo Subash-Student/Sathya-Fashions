@@ -1,15 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { TextField, Button, Typography,Divider, Box, Alert, Link, Grid, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import axios from "axios"
+import {toast} from "react-toastify"
+import { useDispatch } from "react-redux"
+import { setToken } from '../redux/tokenSlice';
 
 const LoginPage = () => {
 
-
+  const dispatch = useDispatch();
   
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: '',
+    mobile: '',
     password: '',
   });
   const [error, setError] = useState('');
@@ -20,7 +23,21 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   navigate("/dashBoard")
+   try {
+    
+      const response = await axios.post("http://localhost:5000/user/login",formData);
+      if(response.data.success){
+         dispatch(setToken(response.data.token));
+         toast.success(response.data.message);
+         navigate("/dashBoard")
+      }else{
+        console.log(response.data)
+        setError(response.data.message)
+      }
+
+   } catch (error) {
+     console.log(error);
+   }
   };
 
   return (
@@ -74,10 +91,10 @@ const LoginPage = () => {
         )}
         <form onSubmit={handleSubmit}>
           <TextField
-            label="Email"
-            name="email"
-            type="email"
-            value={formData.email}
+            label="Mobile"
+            name="mobile"
+            type="number"
+            value={formData.mobile}
             onChange={handleChange}
             fullWidth
             required

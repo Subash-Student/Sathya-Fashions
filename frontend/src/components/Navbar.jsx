@@ -7,8 +7,13 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import PaymentIcon from "@mui/icons-material/Payment";
 import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
+import {useDispatch} from "react-redux"
+import { setToken } from "../redux/tokenSlice";
 
 const Navbar = () => {
+
+  const dispatch = useDispatch()
+
   const [open, setOpen] = useState(false);
  const navigate = useNavigate();
 
@@ -17,8 +22,8 @@ const Navbar = () => {
      navigate(path)
   }
   const handleLogout = () => {
-   
-    navigate("/login")
+   dispatch(setToken(""))
+    navigate("/")
   };
   return (
     <>

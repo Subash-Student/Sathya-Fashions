@@ -25,7 +25,7 @@ const upcomingOrders = orders
   })
   .sort((a, b) => new Date(a.deliveryDate) - new Date(b.deliveryDate));
 
-console.log(upcomingOrders);
+
 
   return (
     <Card sx={{ mt: 2, p: 1,boxShadow: 2 }} >
