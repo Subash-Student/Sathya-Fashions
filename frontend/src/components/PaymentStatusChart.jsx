@@ -7,9 +7,12 @@ import {
  
 } from "@mui/icons-material";
 import CancelIcon from '@mui/icons-material/Cancel';
+import PendingActionsIcon from '@mui/icons-material/PendingActions'
 
 const PendingAmountList = ({ orders }) => {
-  const pendingOrders = orders.filter(order => order.paymentStatus === "Pending");
+
+  const pendingOrders = orders.filter(order => order.paymentStatus === "Pending" || order.paymentStatus === "Advance" );
+  console.log(pendingOrders)
  const navigate = useNavigate()
   return (
     <Card sx={{ mt: 2, p: 1.5,boxShadow:2 }}>
@@ -28,7 +31,7 @@ const PendingAmountList = ({ orders }) => {
               <ListItem style={{display:"flex",justifyContent:'space-between'}} key={index} sx={{ mb: 1, p: 1, borderBottom: "1px solid #ddd" }}>
                 <Box>
                   <Typography fontWeight="bold" color="text.primary">
-                    {order.name} - ₹{order.amount}
+                    {order.customerName} - ₹{order.advanceAmount > 0 ? order.totalAmount - order.advanceAmount : order.totalAmount}
                   </Typography>
                   <Stack direction="row" spacing={1} alignItems="center">
                     <CalendarTodayIcon fontSize="small" color="action" />
@@ -37,7 +40,9 @@ const PendingAmountList = ({ orders }) => {
                 </Box>
                 {order.paymentStatus === "Paid" ? (
                     <CheckCircle color="success" />
-                  ) : (
+                  ) :order.paymentStatus === "Advance" ?(
+                    <PendingActionsIcon sx={{ color:"#f2ba04" }} />
+                  ):(
                     <CancelIcon color="error" />
                   )}
               </ListItem>

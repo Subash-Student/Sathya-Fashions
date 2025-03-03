@@ -39,10 +39,10 @@ const RecentOrders = ({ orders }) => {
              <MoreVertIcon />
            </IconButton>
 
-           <Typography onClick={()=>navigate(`/order/${order.id}`)} fontWeight="bold">#{order.id} - {order.name}</Typography>
+           <Typography onClick={()=>navigate(`/order/${order.order_id}`)} fontWeight="bold">#{order.order_id} - {order.customerName}</Typography>
            <Typography variant="body2">📅 {order.orderDate} → 📦 {order.deliveryDate}</Typography>
            <Typography variant="body2">
-             💰 ₹{order.amount} |{" "}
+             💰 ₹{order.totalAmount} |{" "}
              {order.paymentStatus === "Paid"
                ? `💵 ${order.paymentStatus}`
                : order.paymentStatus === "Advance"

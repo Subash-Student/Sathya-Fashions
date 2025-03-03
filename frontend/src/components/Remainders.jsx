@@ -72,16 +72,16 @@ const upcomingOrders = orders
           }
 
           return (
-            <Card onClick={()=>navigate(`/order/${order.id}`)} key={order.id} sx={{ mt: 2, p: 1.5, bgcolor: "#f9f9f9" }}>
+            <Card onClick={()=>navigate(`/order/${order.order_id}`)} key={order.order_id} sx={{ mt: 2, p: 1.5, bgcolor: "#f9f9f9" }}>
               <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Typography fontWeight="bold">{order.name}</Typography>
+                <Typography fontWeight="bold">{order.customerName}</Typography>
                 <Chip icon={chipIcon} label={chipLabel} color={chipColor} />
               </Stack>
             </Card>
           );
         })
       ) : (
-        <Typography color="textSecondary" sx={{ mt: 1 }}>
+        <Typography color="textSecondary" textAlign="center" sx={{ mt: 2 }}>
           No upcoming orders.
         </Typography>
       )}
