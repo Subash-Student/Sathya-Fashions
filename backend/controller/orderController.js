@@ -127,7 +127,7 @@ export const newOrder = async (req, res) => {
 export const updatePaymentAndOrderStatus = async(req,res)=>{
 
     const {order_id,paymentStatus,orderStatus} = req.body;
-   console.log(order_id)
+   
     if (!order_id || !paymentStatus || !orderStatus) {
         return res.status(400).json({ success: false, message: "Invalid input parameters" });
     }

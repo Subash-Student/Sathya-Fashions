@@ -81,7 +81,7 @@ const upcomingOrders = orders
           );
         })
       ) : (
-        <Typography color="textSecondary" textAlign="center" sx={{ mt: 2 }}>
+        <Typography color="textSecondary" textAlign="center" sx={{ m: 4 }}>
           No upcoming orders.
         </Typography>
       )}

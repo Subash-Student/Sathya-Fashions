@@ -8,13 +8,19 @@ import PaymentDetailsPage from "./pages/PaymentDetailsPage";
 import LoginPage from "./pages/LoginPage";
 import ProtectRoute from "./utils/ProtectRoute";
 import { ToastContainer } from "react-toastify";
+import LoginRoute from "./utils/LoginRoute";
 
 const App = () => {
   return (
     <>
       <ToastContainer />
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={
+       <LoginRoute> 
+         <LoginPage />
+       </LoginRoute>
+       
+      } />
         
         {/* Wrap protected routes inside ProtectRoute */}
         <Route element={<ProtectRoute />}>
