@@ -9,7 +9,7 @@ import {
 import CancelIcon from '@mui/icons-material/Cancel';
 import PendingActionsIcon from '@mui/icons-material/PendingActions'
 
-const PendingAmountList = ({ orders }) => {
+const PendingAmountList = ({ orders,handleNavigation }) => {
 
   const pendingOrders = orders.filter(order => order.paymentStatus === "Pending" || order.paymentStatus === "Advance" );
   console.log(pendingOrders)
@@ -20,17 +20,17 @@ const PendingAmountList = ({ orders }) => {
         <Typography variant="h6" fontWeight="bold" color="#ebb400" textAlign="left">
           💰 Pending Payments
         </Typography>
-        <IconButton onClick={()=>navigate("/paymentDetails")}>
+        <IconButton onClick={()=>handleNavigation("PaymentDetails","Pending")}>
           <ReadMoreIcon />
         </IconButton>
       </Stack>
       <CardContent>
         {pendingOrders.length > 0 ? (
           <List>
-            {pendingOrders.map((order, index) => (
+            {pendingOrders.slice(0,4).map((order, index) => (
               <ListItem style={{display:"flex",justifyContent:'space-between'}} key={index} sx={{ mb: 1, p: 1, borderBottom: "1px solid #ddd" }}>
                 <Box>
-                  <Typography fontWeight="bold" color="text.primary">
+                  <Typography onClick={()=>navigate(`/order/${order.order_id}`)} fontWeight="bold" color="text.primary">
                     {order.customerName} - ₹{order.advanceAmount > 0 ? order.totalAmount - order.advanceAmount : order.totalAmount}
                   </Typography>
                   <Stack direction="row" spacing={1} alignItems="center">

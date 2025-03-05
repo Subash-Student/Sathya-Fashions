@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Drawer,
   IconButton,
@@ -21,14 +21,26 @@ import {CheckCircle, } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
   import CancelIcon from '@mui/icons-material/Cancel';
   import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import { setFilterOptions } from "../redux/orderSlice";
+import { fetchOrders, setFilterOptions } from "../redux/orderSlice";
+import RefreshIcon from '@mui/icons-material/Refresh'
+import {useNavigate} from "react-router-dom"
 
 
 const PaymentDetailsPage = () => {
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  const orders = useSelector((state)=>state.orders.orders);
+  const token = useSelector((state)=>state.token.token)
+
+  useEffect(()=>{
+    dispatch(fetchOrders(token));
+  },[token,dispatch])
+
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const dispatch = useDispatch();
   const filters = useSelector((state) => state.paymentFilterOptions.filterOptions);
 
   
@@ -36,88 +48,40 @@ const PaymentDetailsPage = () => {
     dispatch(setFilterOptions({ ...filters, [e.target.name]: e.target.value }));
   }
   
+  const handleResetFilters = ()=>{
+    dispatch(setFilterOptions({date: "", status: "",sort:"latest"}))
+  }
+  
+
   const toggleFilter = () => setFilterOpen(!filterOpen);
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const paymentHistory = [
-    {
-        id: "1",
-        name: "John Doe",
-        phone: "9876543210",
-        orderDate: "2025-02-15",
-        deliveryDate: "2025-02-28",
-        dressPhoto: "/images/dress1.jpg",
-        voiceNote: "/audio/voice1.mp3",
-        modelBlouseGiven: true,
-        paymentStatus: "Pending",
-        withLining: true,
-        amount: "1500",
-        orderStatus: "Pending",
-        reminderDays: 3,
-      advanceAmount:500,
-
-    },
-    {
-      name: "Priya",
-      phone: "9123456789",
-      orderDate: "2024-02-18",
-      deliveryDate: "2025-02-29",
-      paymentStatus: "Paid",
-      orderStatus: "Completed",
-      dressPhoto: "/images/dress1.jpg",
-        voiceNote: "/audio/voice1.mp3",
-      amount: 2500,
-      withLining: false,
-      modelBlouseGiven: true,
-      advanceAmount:500,
-
-    },
-    {
-      name: "Sneha",
-      phone: "9988776655",
-      orderDate: "2024-02-17",
-      deliveryDate: "2024-02-29",
-      paymentStatus: "Advance",
-      dressPhoto: "/images/dress1.jpg",
-      voiceNote: "/audio/voice1.mp3",
-      orderStatus: "Pending",
-      amount: 1800,
-      advanceAmount:500,
-      withLining: true,
-      modelBlouseGiven: false,
-    },
-    {
-      name: "Sneha",
-      phone: "9988776655",
-      orderDate: "2024-02-15",
-      deliveryDate: "2024-02-30",
-      paymentStatus: "Advance",
-      dressPhoto: "/images/dress1.jpg",
-      voiceNote: "/audio/voice1.mp3",
-      orderStatus: "Pending",
-      amount: 1800,
-      advanceAmount:500,
-      withLining: true,
-      modelBlouseGiven: false,
-    },
-  ];
-
+  
   const paymentStats = {
-    total: 1500,
-    pending: 300,
-    completed: 500,
-    advance: 700,
+    total: orders.reduce((sum,order)=> {sum+= order.totalAmount;return sum},0),
+    pending: orders.reduce((sum,order)=> {order.paymentStatus === "Pending" ? sum+=order.totalAmount : order.paymentStatus === "Advance"? sum+=(order.totalAmount-order.advanceAmount):sum+=0; return sum;},0),
+    advance: orders.reduce((sum,order)=>{order.paymentStatus === "Advance" ? sum+= order.advanceAmount :sum+=0;return sum},0),
   };
 
-  const filteredPayments = paymentHistory.filter((payment) => {
-    const matchesSearchTerm = payment.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesDate = filters.date ? payment.orderDate === filters.date : true;
+
+  const filteredPayments = orders.filter((payment) => {
+    const matchesSearchTerm = payment.customerName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDate = filters.date ? new Date(payment.orderDate).toISOString().split('T')[0] === filters.date : true;
     const matchesStatus = filters.status ? payment.paymentStatus.toLowerCase() === filters.status.toLowerCase() : true;
 
     return matchesSearchTerm && matchesDate && matchesStatus;
-  });
+  }).sort((a, b) => {
+      if (filters.sort === "Latest") {
+        return new Date(b.orderDate) - new Date(a.orderDate); // Sort by latest
+      } else if(filters.sort === "oldest"){
+        return new Date(a.orderDate) - new Date(b.orderDate); // Sort by oldest
+      }else{
+        return new Date(b.orderDate) - new Date(a.orderDate); // Sort by latest
+
+      }
+    });
 
   return (
     <div>
@@ -129,25 +93,25 @@ const PaymentDetailsPage = () => {
         <Grid item xs={6} sm={3}>
           <Card sx={{ padding: 2, textAlign: "center" }}>
             <Typography variant="subtitle1">Total</Typography>
-            <Typography variant="h6" sx={{ fontWeight: "bold" }}>${paymentStats.total}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: "bold" }}>₹{paymentStats.total}</Typography>
           </Card>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Card sx={{ padding: 2, textAlign: "center" }}>
             <Typography variant="subtitle1">Pending </Typography>
-            <Typography variant="h6" sx={{ fontWeight: "bold", color: "orange" }}>${paymentStats.pending}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: "bold", color: "orange" }}>₹{paymentStats.pending}</Typography>
           </Card>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Card sx={{ padding: 2, textAlign: "center" }}>
-            <Typography variant="subtitle1">Completed </Typography>
-            <Typography variant="h6" sx={{ fontWeight: "bold", color: "green" }}>${paymentStats.completed}</Typography>
+            <Typography variant="subtitle1">Paid </Typography>
+            <Typography variant="h6" sx={{ fontWeight: "bold", color: "green" }}>₹{paymentStats.total- paymentStats.pending}</Typography>
           </Card>
         </Grid>
         <Grid item xs={6} sm={3}>
           <Card sx={{ padding: 2, textAlign: "center" }}>
             <Typography variant="subtitle1">Advance </Typography>
-            <Typography variant="h6" sx={{ fontWeight: "bold", color: "blue" }}>${paymentStats.advance}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: "bold", color: "blue" }}>₹{paymentStats.advance}</Typography>
           </Card>
         </Grid>
       </Grid>
@@ -157,7 +121,12 @@ const PaymentDetailsPage = () => {
       {/* Right Sidebar for Filters */}
       <Drawer anchor="right" open={filterOpen} onClose={toggleFilter}>
         <div style={{ width: 250, padding: 16 }}>
-          <h3>Filters</h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <h3>Filters</h3>
+      <IconButton onClick={handleResetFilters}>
+        <RefreshIcon />
+      </IconButton>
+    </div>
           <TextField
             label="Select Date"
             type="date"
@@ -169,6 +138,7 @@ const PaymentDetailsPage = () => {
             InputLabelProps={{ shrink: true }}
           />
           <TextField
+            sx={{ mb: 2 }}
             select
             label="Payment Status"
             name="status"
@@ -177,10 +147,24 @@ const PaymentDetailsPage = () => {
             fullWidth
           >
             <MenuItem value="">All</MenuItem>
-            <MenuItem value="pending">Pending</MenuItem>
-            <MenuItem value="paid">Paid</MenuItem>
-            <MenuItem value="advance">Advance</MenuItem>
+            <MenuItem value="Pending">Pending</MenuItem>
+            <MenuItem value="Paid">Paid</MenuItem>
+            <MenuItem value="Advance">Advance</MenuItem>
           </TextField>
+
+          <TextField
+            select
+            label="Sort By"
+            name="sort"
+            value={filters.sort}
+            onChange={handleFilterChange}
+            fullWidth
+          >
+            <MenuItem value="Latest">Latest</MenuItem>
+            <MenuItem value="Oldest">Oldest</MenuItem>
+  
+          </TextField>
+         
         </div>
       </Drawer>
 
@@ -201,20 +185,23 @@ const PaymentDetailsPage = () => {
           <FilterListIcon />
         </IconButton>
       </div>
-  <Typography variant="h6" textAlign={"center"} style={{margin:"8px"}}>Payment Status</Typography>
+  <Typography variant="h6" textAlign={"center"} style={{margin:"8px"}}>{filters.status !== "" && filters.sort !=="" ? `Filterd Payments` : filters.status ===""?`${filters.sort} Payments`:`${filters.status} Payments`}</Typography>
    <Divider />
         <CardContent style={{padding:1}}>
           {filteredPayments.length > 0 ? (
             <List>
               {filteredPayments.map((payment) => (
-                <ListItem style={{display:"flex",justifyContent:'space-between'}} key={payment.id} sx={{ mb: 1, p: 1.5, borderBottom: "1px solid #ddd" }}>
+                <ListItem  style={{display:"flex",justifyContent:'space-between'}} key={payment.order_id} sx={{ mb: 1, p: 1.5, borderBottom: "1px solid #ddd" }}>
                   <Box>
-                    <Typography fontWeight="bold" color="text.primary">
-                      {payment.name} - ₹{payment.amount}
+                    <Typography onClick={()=>navigate(`/order/${payment.order_id}`)} fontWeight="bold" color="text.primary">
+                      {payment.customerName} - ₹{payment.totalAmount}
                     </Typography>
+                    {payment.paymentStatus === "Advance" && 
+                    <Typography m={0.5} fontSize="small" color="text.secondary">{`Advance : ${payment.advanceAmount} | Remaining : ${payment.totalAmount - payment.advanceAmount}`}</Typography>
+                    }
                     <Stack direction="row" spacing={1} alignItems="center">
-                      <CalendarTodayIcon fontSize="small" color="action" />
-                      <Typography color="text.secondary">Delivery : {payment.deliveryDate}</Typography>
+                      <CalendarTodayIcon fontSize="15px" color="action" />
+                      <Typography fontSize="13px" color="text.secondary">{payment.orderDate} →  {payment.deliveryDate}</Typography>
                     </Stack>
                   </Box>
                   {payment.paymentStatus === "Paid" ? (
@@ -226,7 +213,7 @@ const PaymentDetailsPage = () => {
               ))}
             </List>
           ) : (
-            <Typography color="textSecondary" textAlign="center" sx={{ mt: 2 }}>
+            <Typography color="textSecondary" m={5} textAlign="center" sx={{ mt: 2 }}>
               No payment records available.
             </Typography>
           )}
@@ -239,7 +226,8 @@ const PaymentDetailsPage = () => {
   <Divider />
 
   <ResponsiveContainer width="100%" style={{paddingTop:"15px"}} height={300}>
-    <BarChart data={paymentHistory}>
+    {orders ?
+      <BarChart data={orders}>
       <XAxis
         dataKey="deliveryDate"
         interval={0}
@@ -253,8 +241,12 @@ const PaymentDetailsPage = () => {
       />
       <YAxis />
       <Tooltip />
-      <Bar dataKey="amount" fill="#8884d8" />
-    </BarChart>
+      <Bar dataKey="totalAmount" fill="#8884d8" />
+    </BarChart> :
+     <Typography color="textSecondary" m={5} textAlign="center" sx={{ mt: 2 }}>
+     No payment records available.
+   </Typography>}
+  
   </ResponsiveContainer>
 </Card>
     </div>

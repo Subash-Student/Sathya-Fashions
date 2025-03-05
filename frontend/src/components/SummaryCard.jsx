@@ -6,13 +6,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import CountUp from "react-countup";
 
-const SummaryCards = ({ pendingOrders, reminderOrders, completedOrders, pendingAmount }) => {
+const SummaryCards = ({handleNavigation, pendingOrders, reminderOrders, completedOrders, pendingAmount }) => {
 
   const cardData = [
-      { title: "Reminder Orders", value: reminderOrders, icon: <HourglassFullIcon />, color: "#F44336", },
-      { title: "Pending Amount", value: `₹${pendingAmount}`, icon: <CurrencyRupeeIcon />, color: "#2196F3" },
-      { title: "Completed Orders", value: completedOrders, icon: <CheckCircleIcon />, color: "#4CAF50" },
-      { title: "Pending Orders", value: pendingOrders, icon: <ShoppingCartIcon />, color: "#FF9800" },
+      { title: "Reminder Orders",status:"",type:"orders", value: reminderOrders, icon: <HourglassFullIcon />, color: "#F44336", },
+      { title: "Pending Amount",status:"Pending",type:"paymentDetails", value: `₹${pendingAmount}`, icon: <CurrencyRupeeIcon />, color: "#2196F3" },
+      { title: "Completed Orders",status:"Completed",type:"orders", value: completedOrders, icon: <CheckCircleIcon />, color: "#4CAF50" },
+      { title: "Pending Orders",status:"Pending",type:"orders", value: pendingOrders, icon: <ShoppingCartIcon />, color: "#FF9800" },
   ];
 
   return (
@@ -20,7 +20,7 @@ const SummaryCards = ({ pendingOrders, reminderOrders, completedOrders, pendingA
     <Grid container spacing={2} sx={{ mt: 2 }}>
       {cardData.map((card, index) => (
         <Grid item xs={6} sm={3} key={index}>
-          <Card sx={{ backgroundColor: card.color, color: "#fff", textAlign: "center" }}>
+          <Card onClick={()=>{handleNavigation(card.type,card.status)}} sx={{ backgroundColor: card.color, color: "#fff", textAlign: "center" }}>
   <CardContent>
     <Box
       sx={{

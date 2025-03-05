@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom'
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 
  
-const Reminders = ({ orders }) => {
+const Reminders = ({ orders  }) => {
 
     const navigate = useNavigate()
 

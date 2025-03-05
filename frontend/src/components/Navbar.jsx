@@ -9,6 +9,7 @@ import AddBoxIcon from "@mui/icons-material/AddBox";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {useDispatch} from "react-redux"
 import { setToken } from "../redux/tokenSlice";
+import { setFilterOptions, setOrderFilterOptions } from "../redux/orderSlice";
 
 const Navbar = () => {
 
@@ -19,6 +20,18 @@ const Navbar = () => {
 
   const handleNavigation = (path)=>{
      setOpen(false);
+     if(path ==="/orders"){
+    dispatch(setOrderFilterOptions({
+      date: "",
+      status: "",
+      paymentStatus: "",
+      sort: "", 
+    }));
+
+     }else if(path ==="/paymentDetails"){
+          dispatch(setFilterOptions({date: "", status: "",sort:""}))
+     }
+
      navigate(path)
   }
   const handleLogout = () => {

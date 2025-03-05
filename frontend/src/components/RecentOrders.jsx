@@ -7,11 +7,25 @@ import {
 
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {  useDispatch } from "react-redux";
+import { setOrderFilterOptions } from "../redux/orderSlice";
 
-const RecentOrders = ({ orders }) => {
+const RecentOrders = ({ orders ,handleNavigation}) => {
   
 
   const navigate = useNavigate();
+ const dispatch = useDispatch();
+
+ const handleNavigate = ()=>{
+
+  dispatch(setOrderFilterOptions({
+    date: "",
+    status: "",
+    paymentStatus: "",
+    sort: "Latest", 
+  }))
+   navigate("/orders")
+ }
 
   return (
     <Box sx={{ mt: 2, px: 0,boxShadow:2 }}>
@@ -21,39 +35,35 @@ const RecentOrders = ({ orders }) => {
      <Typography color="primary" variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
       📋  Recent Orders
       </Typography>
-        <IconButton onClick={()=>navigate("/orders")}>
+        <IconButton onClick={handleNavigate}>
           <ReadMoreIcon />
         </IconButton>
       </Stack>
 
      
 
-      {orders.map((order, index) => (
+      {orders.slice(0,4).map((order, index) => (
          <Grid item xs={12} key={order.id}>
          <Card  sx={{ p: 2.5, borderRadius: 0, boxShadow: 0, position: "relative" }}>
            {/* Three-dot icon */}
-           <IconButton
-             sx={{ position: "absolute", top: 8, right: 8 }}
-            //  onClick={(e) => handleMenuClick(e, order)}
-           >
-             <MoreVertIcon />
-           </IconButton>
+           
 
            <Typography onClick={()=>navigate(`/order/${order.order_id}`)} fontWeight="bold">#{order.order_id} - {order.customerName}</Typography>
            <Typography variant="body2">📅 {order.orderDate} → 📦 {order.deliveryDate}</Typography>
            <Typography variant="body2">
-             💰 ₹{order.totalAmount} |{" "}
-             {order.paymentStatus === "Paid"
-               ? `💵 ${order.paymentStatus}`
-               : order.paymentStatus === "Advance"
-               ? `🏷️ ${order.paymentStatus}`
-               : `❌ ${order.paymentStatus}`}
-           </Typography>
-           <Typography variant="body2">
-             {order.orderStatus === "Completed"
-               ? `✅ ${order.orderStatus}`
-               : `🕒 ${order.orderStatus}`}
-           </Typography>
+                💰 ₹{order.totalAmount} |{' '}
+                {order.paymentStatus === 'Paid'
+                  ? `💵 ${order.paymentStatus}`
+                  : order.paymentStatus ==='Advance'
+                  ? `🏷️ ${order.paymentStatus}`
+                  : `🕒 ${order.paymentStatus}`}
+              </Typography>
+              <Typography variant="body2">
+              {order.orderStatus ==='Completed'
+                  ? `✅ ${order.orderStatus}`
+                  : order.orderStatus === 'Pending' ?`🕒 ${order.orderStatus}`:`❌ ${order.orderStatus}`}
+                  
+              </Typography>
          </Card>
          <Divider />
        </Grid>

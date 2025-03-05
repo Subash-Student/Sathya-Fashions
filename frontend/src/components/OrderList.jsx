@@ -30,7 +30,7 @@ import ReceiptIcon from "@mui/icons-material/Receipt";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {useNavigate} from "react-router-dom"
 import {useSelector,useDispatch} from "react-redux"
-import { fetchOrders } from "../redux/orderSlice";
+import { fetchOrders, setOrderFilterOptions } from "../redux/orderSlice";
 import RefreshIcon from '@mui/icons-material/Refresh'
 
 const OrderList = () => {
@@ -45,16 +45,11 @@ const OrderList = () => {
 
   const orders = useSelector((state)=>state.orders.orders);
  
+  const filters = useSelector((state)=>state.ordersFilterOptions.filterOptions)
 
   const navigate = useNavigate()
   const [search, setSearch] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
-  const [filters, setFilters] = useState({
-    date: "",
-    status: "",
-    paymentStatus: "",
-    sort: "latest", // Added sort filter
-  });
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -64,7 +59,7 @@ const OrderList = () => {
   
 
   const handleFilterChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+    dispatch(setOrderFilterOptions({ ...filters, [e.target.name]: e.target.value }));
   };
 
   const toggleFilter = () => setFilterOpen(!filterOpen);
@@ -87,10 +82,13 @@ const OrderList = () => {
       return matchesSearch && matchesDate && matchesStatus && matchesPaymentStatus;
     })
     .sort((a, b) => {
-      if (filters.sort === "latest") {
+      if (filters.sort === "Latest") {
         return new Date(b.orderDate) - new Date(a.orderDate); // Sort by latest
-      } else {
+      } else if(filters.sort === "oldest"){
         return new Date(a.orderDate) - new Date(b.orderDate); // Sort by oldest
+      }else{
+        return new Date(b.orderDate) - new Date(a.orderDate); // Sort by latest
+
       }
     });
 
@@ -157,12 +155,12 @@ const OrderList = () => {
 let prevDate;
 
 const handleResetFilters = () => {
-  setFilters({
+  dispatch(setOrderFilterOptions({
     date: '',
     status: '',
     paymentStatus: '',
     sort: 'latest'
-  });
+  }));
 };
 
 const handleDelete = async(id)=>{
@@ -198,7 +196,7 @@ const handleDelete = async(id)=>{
     <Card sx={{ maxWidth: 600, mx: "auto", mt: 0.5, p: 0, borderRadius: 2, boxShadow: 3 }}>
       <Typography p={1} variant="h5" fontWeight="bold" textAlign="center">
         <ReceiptIcon sx={{ color: "#4CAF50", verticalAlign: "middle", mr: 1, paddingBottom: "5px", }} />
-        Orders
+        {filters.status !== "" && filters.sort !=="" ? `Filterd Orders` : filters.status ===""?`${filters.sort} Orders`:`${filters.status} Orders`}
       </Typography>
       <CardContent>
         <div>

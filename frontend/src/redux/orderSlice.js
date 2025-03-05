@@ -39,20 +39,34 @@ const orderSlice = createSlice({
 
 const paymentFilterSlice = createSlice({
     name:"paymentFilterOptions",
-    initialState:{ filterOptions:{date: "", status: ""} },
+    initialState:{ filterOptions:{date: "", status: "",sort:"Latest"} },
     reducers:{
         setFilterOptions:(state,action)=>{
             state.filterOptions = action.payload;
         }
     }
 })
+const ordersFilterSlice = createSlice({
+    name:"ordersFilterOptions",
+    initialState:{ filterOptions:{
+      date: "",
+      status: "",
+      paymentStatus: "",
+      sort: "Latest", 
+    } },
+    reducers:{
+        setOrderFilterOptions:(state,action)=>{
+            state.filterOptions = action.payload;
+        }
+    }
+})
 
 
-
+export const {setOrderFilterOptions} = ordersFilterSlice.actions;
 export const { setFilterOptions } = paymentFilterSlice.actions;
 export const orderReducer = orderSlice.reducer;
 export const paymentFilterReducer = paymentFilterSlice.reducer
-
+export const ordersFilterReducer = ordersFilterSlice.reducer;
 
 
 
