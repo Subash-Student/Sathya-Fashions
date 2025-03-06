@@ -133,7 +133,7 @@ const OrderList = () => {
         const response = await axios.post("http://localhost:5000/order/update-status", formData, {
           withCredentials: true,
           headers: {
-            "Content-Type": "multipart/form-data", // Ensure correct content type
+            "Content-Type": "multipart/form-data", 
             token
           }
         });
@@ -346,7 +346,7 @@ const handleDelete = async(id)=>{
         sx={{ "& .MuiPaper-root": { width: 150 } }}
       >
         <MenuItem onClick={handleOpenModal}>Change Status</MenuItem>
-        <MenuItem>Edit</MenuItem>
+        <MenuItem onClick={()=>navigate(`/newOrder/${orderId}`)}>Edit</MenuItem>
         <MenuItem onClick={()=>handleDelete(orderId)} sx={{ color: "error.main" }}>Delete</MenuItem>
       </Menu>
 

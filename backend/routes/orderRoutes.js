@@ -8,7 +8,10 @@ import multer from "multer"
 const orderRouter = express.Router();
 
 
-orderRouter.post("/new-order",authMiddleware,newOrder);
+orderRouter.post("/new-order",multer().fields([
+{name:"image",maxCount:1},
+{name:"audio",maxCount:1}]
+),authMiddleware,newOrder);
 orderRouter.get("/orders",authMiddleware,getOrder);
 orderRouter.get("/order-details/:id",authMiddleware,getOrderDetails);
 orderRouter.delete("/delete/:id",authMiddleware,deleteOrder);

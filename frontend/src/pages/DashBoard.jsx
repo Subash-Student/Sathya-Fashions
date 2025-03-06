@@ -54,6 +54,10 @@ const recentOrders = useMemo(() => {
     return [...orders].sort((a, b) => new Date(b.order_id) - new Date(a.order_id));
 }, [orders]); 
 
+const recentPayments = useMemo(() => {
+    return [...orders].sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+}, [orders]); 
+
  
 const handleNavigation = (type,status)=>{
   if(type === "orders"){
@@ -77,7 +81,7 @@ const handleNavigation = (type,status)=>{
       <SummaryCards handleNavigation={handleNavigation} pendingOrders={pendingOrder.length} reminderOrders={reminderOrders.length} completedOrders={completedOrders.length} pendingAmount={pendingAmount} />
       <Reminders orders={orders} />
       <RecentOrders orders={recentOrders}handleNavigation={handleNavigation}/>
-     <PaymentStatusChart orders={orders} handleNavigation={handleNavigation}/>
+     <PaymentStatusChart orders={recentPayments} handleNavigation={handleNavigation}/>
     </>
   );
 };
