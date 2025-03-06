@@ -32,6 +32,7 @@ import {useNavigate} from "react-router-dom"
 import {useSelector,useDispatch} from "react-redux"
 import { fetchOrders, setOrderFilterOptions } from "../redux/orderSlice";
 import RefreshIcon from '@mui/icons-material/Refresh'
+import { hideLoader, showLoader } from "../redux/loaderSlice";
 
 const OrderList = () => {
   
@@ -130,6 +131,8 @@ const OrderList = () => {
       
     
       try {
+      dispatch(showLoader(true)); // Show Loader before request
+
         const response = await axios.post("http://localhost:5000/order/update-status", formData, {
           withCredentials: true,
           headers: {
@@ -137,6 +140,7 @@ const OrderList = () => {
             token
           }
         });
+        dispatch(hideLoader(false)); // Show Loader before request
     
         if (response.data.success) {
           toast.success(response.data.message);
@@ -166,6 +170,7 @@ const handleResetFilters = () => {
 const handleDelete = async(id)=>{
   
   try {
+    dispatch(showLoader(true)); // Show Loader before request
     
     const responsee = await axios.delete(`http://localhost:5000/order/delete/${id}`,{
       withCredentials: true,
@@ -173,6 +178,7 @@ const handleDelete = async(id)=>{
         token
       }
     },);
+    dispatch(hideLoader(false)); // Show Loader before request
 
     if(responsee.data.success){
       toast.success(responsee.data.message);

@@ -1,15 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { hideLoader, showLoader } from "./loaderSlice";
 
 
-
-export const fetchOrders = createAsyncThunk("orders/fetchOrders", async (token) => {
-  const response = await axios.get("http://localhost:5000/order/orders",{
-    headers:{token},
-    withCredentials:true
-  });
-  return response.data.orders; 
-});
+export const fetchOrders = createAsyncThunk(
+  "orders/fetchOrders",
+  async (token, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(showLoader(true)); // Show Loader before request
+      const response = await axios.get("http://localhost:5000/order/orders", {
+        headers: { token },
+        withCredentials: true,
+      });
+      if(response.status === 200){
+      dispatch(hideLoader(false)); // Hide Loader after request
+               
+      }
+      return response.data.orders;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Something went wrong");
+    } 
+  }
+);
 
 const orderSlice = createSlice({
   name: "orders",

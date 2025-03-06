@@ -27,7 +27,7 @@ const PendingAmountList = ({ orders,handleNavigation }) => {
       <CardContent>
         {pendingOrders.length > 0 ? (
           <List>
-            {pendingOrders.slice(0,4).map((order, index) => (
+            {pendingOrders.slice(0,5).map((order, index) => (
               <ListItem style={{display:"flex",justifyContent:'space-between'}} key={index} sx={{ mb: 1, p: 1, borderBottom: "1px solid #ddd" }}>
                 <Box>
                   <Typography onClick={()=>navigate(`/order/${order.order_id}`)} fontWeight="bold" color="text.primary">

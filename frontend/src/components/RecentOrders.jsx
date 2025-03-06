@@ -42,7 +42,7 @@ const RecentOrders = ({ orders ,handleNavigation}) => {
 
      
 
-      {orders.slice(0,4).map((order, index) => (
+      {orders.slice(0,5).map((order, index) => (
          <Grid item xs={12} key={order.id}>
          <Card  sx={{ p: 2.5, borderRadius: 0, boxShadow: 0, position: "relative" }}>
            {/* Three-dot icon */}

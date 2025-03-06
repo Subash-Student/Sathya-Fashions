@@ -13,6 +13,7 @@ import {toast } from "react-toastify"
 import { useParams } from "react-router"
 import { fetchOrders } from "../redux/orderSlice";
 import dayjs from "dayjs";
+import { hideLoader, showLoader } from "../redux/loaderSlice";
 
 
 const NewOrder = () => {
@@ -136,6 +137,8 @@ useEffect(() => {
     }
     
      try {
+      dispatch(showLoader(true)); // Show Loader before request
+
       const response = await axios.post("http://localhost:5000/order/new-order",FORMDATA,{
         withCredentials:true,
           headers: {
@@ -143,7 +146,8 @@ useEffect(() => {
             token
           }
       });
-
+      dispatch(hideLoader(true)); // Show Loader before request
+ 
       if(response.data.success){
              toast.success(response.data.message);
              if(!!order_id){

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import  { orderReducer,ordersFilterReducer,paymentFilterReducer } from "./orderSlice";
 import { tokenReducer } from "./tokenSlice";
+import loaderReducer from "./loaderSlice";
 
 
 export const store = configureStore({
@@ -8,7 +9,8 @@ export const store = configureStore({
     orders: orderReducer,
     paymentFilterOptions:paymentFilterReducer,
     token:tokenReducer,
-    ordersFilterOptions:ordersFilterReducer
+    ordersFilterOptions:ordersFilterReducer,
+    loader: loaderReducer,
   },
 });
 
