@@ -29,7 +29,7 @@ const NewOrder = () => {
 
   const params = useParams();
   const order_id = params.id;
-console.log(order_id)
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -45,7 +45,7 @@ console.log(order_id)
     amount: 0,
     orderStatus: "Pending",
   });
-console.log(orders)
+
 const [audioBlob, setAudioBlob] = useState(null);
 const [audioURL, setAudioURL] = useState(null);
 const [imageFile,setImageFile] = useState(null);
@@ -119,7 +119,7 @@ useEffect(() => {
 
     for (let key in formData) {
       if(key === "image")continue;
-      if(key === "orderDate" || key === "reminderDate" || key === "deliveryDate"){
+      if(key == "orderDate" || key == "reminderDate" || key == "deliveryDate"){
         FORMDATA.append(`${key}`, formData[key].$d.toISOString().split('T')[0]);
       }else{
         FORMDATA.append(`${key}`, formData[key]);
@@ -132,9 +132,7 @@ useEffect(() => {
     !!order_id  && FORMDATA.append("order_id",order_id);
       
     
-    for (let [key, value] of FORMDATA.entries()) {
-      console.log(key, value);
-    }
+    
     
      try {
       dispatch(showLoader(true)); // Show Loader before request
@@ -180,8 +178,7 @@ useEffect(() => {
      }
     
   };
-console.log(formData);
-console.log(audioURL);
+
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -257,7 +254,7 @@ console.log(audioURL);
               </Grid>
               {/* Model Blouse */}
               <Grid item xs={6}>
-                <Typography variant="subtitle1" fontWeight="bold">Model Blouse</Typography>
+                <Typography variant="subtitle1" fontWeight="bold">Model Dress</Typography>
                 <FormControlLabel
                   control={
                     <Checkbox

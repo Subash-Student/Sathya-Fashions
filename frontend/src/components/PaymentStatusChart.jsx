@@ -12,7 +12,7 @@ import PendingActionsIcon from '@mui/icons-material/PendingActions'
 const PendingAmountList = ({ orders,handleNavigation }) => {
 
   const pendingOrders = orders.filter(order => order.paymentStatus === "Pending" || order.paymentStatus === "Advance" );
-  console.log(pendingOrders)
+  
  const navigate = useNavigate()
   return (
     <Card sx={{ mt: 2, p: 1.5,boxShadow:2 }}>

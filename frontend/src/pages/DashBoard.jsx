@@ -20,7 +20,7 @@ import {useNavigate} from "react-router-dom"
   useEffect(()=>{
         dispatch(fetchOrders(token));
   },[])
- console.log(orders) 
+ 
 
 
  const pendingOrder = orders.filter(order=>{

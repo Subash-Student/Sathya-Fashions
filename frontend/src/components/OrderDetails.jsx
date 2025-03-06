@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, Card, CardMedia, Stack, Divider, Chip, IconButton } from "@mui/material";
 import {  Edit, CalendarToday,  AccessTime } from "@mui/icons-material";
@@ -7,70 +7,27 @@ import {
    CheckCircle, 
   
 } from "@mui/icons-material";
-const orders = [
-  {
-    id: "1",
-    name: "John Doe",
-    phone: "9876543210",
-    orderDate: "2025-02-15",
-    deliveryDate: "2025-02-28",
-    dressPhoto: "/images/dress1.jpg",
-    voiceNote: "/audio/voice1.mp3",
-    modelBlouseGiven: true,
-    paymentStatus: "Pending",
-    withLining: true,
-    advanceAmount:500,
-    amount: "1500",
-    orderStatus: "Processing",
-    reminderDays: 3,
-  },
-  {
-    id: "12345",
-    phone: "9876543210",
-    name: "John Doe",
-    orderDate: "2024-02-12",
-    deliveryDate: "2024-02-15",
-    amount: 2500,
-    orderStatus: "Completed",
-    paymentStatus: "Paid",
-    reminderDays: 3,
-
-  },
-  {
-    id: "12346",
-    name: "Jane Smith",
-    orderDate: "2024-02-14",
-    deliveryDate: "2024-02-20",
-    amount: 1800,
-    orderStatus: "In Progress",
-    paymentStatus: "Pending",
-    phone: "9876543210",
-    reminderDays: 3,
-
-  },
-  {
-    id: "12347",
-    name: "Alice Johnson",
-    orderDate: "2024-02-10",
-    deliveryDate: "2024-02-18",
-    amount: 3000,
-    orderStatus: "Completed",
-    paymentStatus: "Advance",
-    phone: "9876543210",
-    reminderDays: 3,
-
-  },
-];
+import {useSelector,useDispatch} from "react-redux"
+import { fetchOrders } from "../redux/orderSlice";
 
 const OrderDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const order = orders.find((order) => order.id === id);
+  const token = useSelector((state) => state.token.token);
+
+ const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(fetchOrders(token));
+},[token,dispatch])
+
+  const orders = useSelector((state)=>state.orders.orders);
+  const order = orders.find((order) => order.order_id === Number(id));
 
   if (!order) return <Typography>Order Not Found</Typography>;
 
   return (
-    <Box sx={{ p: 3, background: "#f9f9f9", minHeight: "100vh" }}>
+    <Box sx={{ p: 1, background: "#f9f9f9", minHeight: "100vh" }}>
       {/* Header with Back Button & Edit Icon */}
       
 
@@ -85,13 +42,13 @@ const OrderDetails = () => {
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <div>
       <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-          {order.name}
+          {order.customerName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           📞 {order.phone}
         </Typography>
         </div>
-        <IconButton color="primary" onClick={() => navigate(`/edit-order/${id}`)}>
+        <IconButton color="primary" onClick={() => navigate(`/newOrder/${order.order_id}`)}>
           <Edit />
         </IconButton>
       </Stack>
@@ -102,44 +59,57 @@ const OrderDetails = () => {
         <Stack spacing={2}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <CalendarToday color="primary" />
-            <Typography variant="body1">Order Date: {order.orderDate}</Typography>
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>Order Date: </b> { new Date(order.orderDate).toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year:"numeric"
+            })}</Typography>
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
             <CalendarToday color="secondary" />
-            <Typography variant="body1">Delivery Date: {order.deliveryDate}</Typography>
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>Delivery Date: </b>{ new Date(order.deliveryDate).toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year:"numeric"
+            })}</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <CalendarToday color="yellow" />
+            <Typography variant="body1"> <b style={{color:"#6c6b6b"}}>Reminder Date: </b>{ new Date(order.reminderDate).toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year:"numeric"
+            })}</Typography>
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">💵 Amount: ₹{order.amount}</Typography>
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>💵 Amount: ₹</b>{order.totalAmount}</Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">💴 Advance: ₹{order.advanceAmount}</Typography>
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>💴 Advance: ₹</b>{order.advanceAmount}</Typography>
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">🔲 With Lining: </Typography>
-            <Chip label={order.withLining ? "Yes" : "No"} color={order.withLining ? "success" : "error"} />
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>🔲 With Lining: </b></Typography>
+            <Chip label={order.withLining ? "Yes" : "No"} style={{color:"white",fontWeight:"bold",backgroundColor:`${order.withLining ?"#0ea713" : "#FF5733" }`}}  />
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">👗 Model Blouse Given:</Typography>
-            <Chip label={order.modelBlouseGiven ? "Yes" : "No"} color={order.modelBlouseGiven ? "success" : "error"} />
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>👗 Model Dress Give</b></Typography>
+            <Chip label={order.modelDress ? "Yes" : "No"} style={{color:"white",fontWeight:"bold",backgroundColor:`${order.modelDress ?"#0ea713" : "#FF5733" }`}} />
           </Stack>
 
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">⏳ Order Status:</Typography>
-            <Chip label={order.orderStatus} color="primary" />
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>⏳ Order Status:</b></Typography>
+            <Chip label={order.orderStatus} style={{fontWeight:"bold",color:"white",backgroundColor:order.orderStatus === "Pending" ? "#FFC107" :order.orderStatus === "Advance" ? "#FF5733" : "#0ea713"}} />
           </Stack>
 
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">⏰ Reminder Before:</Typography>
-            <Chip label={`${order.reminderDays} days`} color="warning" />
-          </Stack>
+         
 
           {/* Payment Status */}
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body1">Payment Status:</Typography>
+            <Typography variant="body1"><b style={{color:"#6c6b6b"}}>🤝 Payment Status:</b></Typography>
             <Chip
                 icon={
                   order.paymentStatus === "Pending" ? <CancelIcon color="white" /> :
@@ -161,6 +131,7 @@ const OrderDetails = () => {
       </Card>
 
       {/* Dress Photo */}
+      {order.dressPhoto && 
       <Card sx={{ mt: 3, borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
         <CardMedia
           component="img"
@@ -171,12 +142,16 @@ const OrderDetails = () => {
         />
       </Card>
 
+      }
+
       {/* Voice Note */}
+      {order.voiceNote &&
       <Card sx={{ mt: 3, p: 2, borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
         <Typography variant="h6">🎤  Voice Note</Typography>
         <audio controls src={order.voiceNote} style={{ width: "100%", marginTop: "10px" }} />
       </Card>
-    </Box>
+}
+</Box>
   );
 };
 
