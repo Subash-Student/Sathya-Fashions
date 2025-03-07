@@ -75,7 +75,7 @@ const upcomingOrders = orders
   }
 
   return (
-    <div >
+    <div key={order.order_id} >
       <Card
         key={order.order_id}
         style={{ boxShadow: "none" }}

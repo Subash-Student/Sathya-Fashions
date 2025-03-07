@@ -48,15 +48,31 @@ const OrderDetails = () => {
       
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <div>
-      <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
+      <Typography variant="h6" sx={{ fontWeight: "bold", mb: 0,marginLeft:"50px" }}>
           {order.customerName}
         </Typography>
-      <Stack direction="row" alignItems="center" gap={1} justifyContent="space-between">
+      <Stack direction="row" alignItems="center" gap={2.5} justifyContent="space-between">
 
-        <Typography sx={{animation:`${breathing} 2s infinite ease-in-out`}}variant="body2" color="text.secondary">
+        <Typography
+        onClick={(event) => {
+          event.stopPropagation();
+          window.location.href = `tel:${order.phone}`;
+        }}
+        style={{
+                  border: "1px solid red",
+                  backgroundColor: "white",
+                  color: "white",
+                  width: 30,
+                  height: 30,
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }} position={"relative"} top={"-10px"} sx={{animation:`${breathing} 2s infinite ease-in-out`}}variant="body2" color="text.secondary">
           📞 
         </Typography>
-        <Typography variant="body2" color="text.secondary">
+        <Typography  variant="body2" color="text.secondary">
            {order.phone}
         </Typography>
           </Stack>
