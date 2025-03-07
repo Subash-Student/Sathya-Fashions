@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, Card, CardMedia, Stack, Divider, Chip, IconButton } from "@mui/material";
 import {  Edit, CalendarToday,  AccessTime } from "@mui/icons-material";
 import CancelIcon from '@mui/icons-material/Cancel';
+import { keyframes } from "@emotion/react";
 import {
    CheckCircle, 
   
@@ -26,6 +27,12 @@ const OrderDetails = () => {
 
   if (!order) return <Typography>Order Not Found</Typography>;
 
+  const breathing = keyframes`
+  0% { transform: scale(0.8); }
+  50% { transform: scale(1); }
+  100% { transform: scale(0.8); }
+`;
+
   return (
     <Box sx={{ p: 1, background: "#f9f9f9", minHeight: "100vh" }}>
       {/* Header with Back Button & Edit Icon */}
@@ -44,9 +51,15 @@ const OrderDetails = () => {
       <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
           {order.customerName}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          📞 {order.phone}
+      <Stack direction="row" alignItems="center" gap={1} justifyContent="space-between">
+
+        <Typography sx={{animation:`${breathing} 2s infinite ease-in-out`}}variant="body2" color="text.secondary">
+          📞 
         </Typography>
+        <Typography variant="body2" color="text.secondary">
+           {order.phone}
+        </Typography>
+          </Stack>
         </div>
         <IconButton color="primary" onClick={() => navigate(`/newOrder/${order.order_id}`)}>
           <Edit />

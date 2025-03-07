@@ -91,6 +91,7 @@ useEffect(() => {
 
   // Handle input changes
   const handleInputChange = (field, value) => {
+    
     setFormData({ ...formData, [field]: value });
   };
 
@@ -111,16 +112,21 @@ useEffect(() => {
     50% { transform: scale(1); }
     100% { transform: scale(0.8); }
   `;
-
+const fixDate = (date) => {
+  const d = new Date(date);
+  d.setHours(12, 0, 0, 0); // Set to noon to avoid timezone shifts
+  return d.toISOString().split('T')[0];
+};
   // Handle form submission
   const handleSubmit =async () => {
+   
    
     const FORMDATA = new FormData();
 
     for (let key in formData) {
       if(key === "image")continue;
       if(key == "orderDate" || key == "reminderDate" || key == "deliveryDate"){
-        FORMDATA.append(`${key}`, formData[key].$d.toISOString().split('T')[0]);
+        FORMDATA.append(`${key}`,fixDate(formData[key].$d));
       }else{
         FORMDATA.append(`${key}`, formData[key]);
       }

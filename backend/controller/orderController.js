@@ -88,7 +88,7 @@ export const newOrder = async (req, res) => {
                 { new: true } 
             );
 
-            return res.json({ success: true, updatedData, message: "Order Updated!" });
+            return res.json({ success: true, message: "Order Updated!" });
         }
 
         // 🔹 If no order_id, create a new order

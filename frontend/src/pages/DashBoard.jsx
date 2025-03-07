@@ -68,7 +68,10 @@ const handleNavigation = (type,status)=>{
       sort: "", 
     }));
     navigate("/orders");
-  }else{
+  }else if(type === "reminder"){
+    navigate("/reminderOrders")
+  }
+  else{
     dispatch(setFilterOptions({date: "", status: status,sort:""}));
     navigate("/paymentDetails")
   }

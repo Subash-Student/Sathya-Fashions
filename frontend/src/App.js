@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import ProtectRoute from "./utils/ProtectRoute";
 import LoginRoute from "./utils/LoginRoute";
 import Loader from "./components/Loader"; // Import the Loader component
+import ReminderOrdersPage from "./pages/ReminderOrdersPage";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
             <Route path="/newOrder" element={<NewOrderPage />} />
             <Route path="/newOrder/:id" element={<NewOrderPage />} />
             <Route path="/paymentDetails" element={<PaymentDetailsPage />} />
+            <Route path="/reminderOrders" element={<ReminderOrdersPage />} />
           </Route>
         </Routes>
       </>
