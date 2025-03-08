@@ -6,7 +6,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const tokenSlice = createSlice({
     name:"token",
-    initialState:{token:localStorage.getItem("token")},
+    initialState:{token:localStorage.getItem("token")|| null},
     reducers:{
         setToken:(state,action)=>{
             state.token = action.payload;

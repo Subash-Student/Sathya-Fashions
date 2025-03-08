@@ -1,13 +1,11 @@
-import React from 'react'
+import React from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const LoginRoute = () => {
-    const token = useSelector((state) => state.token.token);
+const LoginRoute = ({ children }) => {
+  const token = useSelector((state) => state.token.token);
 
+  return token ? <Navigate to="/dashBoard" /> : children;
+};
 
-    return !token ? <Navigate to={"/"}/> : <Navigate to={"/dashBoard"}/>
-    
-}
-
-export default LoginRoute
+export default LoginRoute;

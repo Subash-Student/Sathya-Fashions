@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
 import DashBoard from "./pages/DashBoard";
 import OrderDetailsPage from "./pages/OrderDetailsPage";
 import NewOrderPage from "./pages/NewOrderPage";
@@ -14,27 +15,23 @@ import ReminderOrdersPage from "./pages/ReminderOrdersPage";
 
 const App = () => {
   return (
-      <>
-        <ToastContainer />
-        <Loader />
-        <Routes>
-          <Route path="/" element={
-            <LoginRoute> 
-              <LoginPage />
-            </LoginRoute>
-          } />
-          
-          <Route element={<ProtectRoute />}>
-            <Route path="/dashBoard" element={<DashBoard />} />
-            <Route path="/order/:id" element={<OrderDetailsPage />} />
-            <Route path="/orders" element={<OrderListPage />} />
-            <Route path="/newOrder" element={<NewOrderPage />} />
-            <Route path="/newOrder/:id" element={<NewOrderPage />} />
-            <Route path="/paymentDetails" element={<PaymentDetailsPage />} />
-            <Route path="/reminderOrders" element={<ReminderOrdersPage />} />
-          </Route>
-        </Routes>
-      </>
+    <>
+      <ToastContainer />
+      <Loader />
+      <Routes>
+        {/* Login route should be protected if the user is already logged in */}
+        <Route path="/" element={<LoginRoute><LoginPage /></LoginRoute>} />
+
+        {/* Protected routes that require authentication */}
+        <Route path="/dashBoard" element={<ProtectRoute><DashBoard /></ProtectRoute>} />
+        <Route path="/order/:id" element={<ProtectRoute><OrderDetailsPage /></ProtectRoute>} />
+        <Route path="/orders" element={<ProtectRoute><OrderListPage /></ProtectRoute>} />
+        <Route path="/newOrder" element={<ProtectRoute><NewOrderPage /></ProtectRoute>} />
+        <Route path="/newOrder/:id" element={<ProtectRoute><NewOrderPage /></ProtectRoute>} />
+        <Route path="/paymentDetails" element={<ProtectRoute><PaymentDetailsPage /></ProtectRoute>} />
+        <Route path="/reminderOrders" element={<ProtectRoute><ReminderOrdersPage /></ProtectRoute>} />
+      </Routes>
+    </>
   );
 };
 

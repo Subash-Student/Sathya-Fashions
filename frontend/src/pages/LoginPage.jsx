@@ -5,6 +5,7 @@ import axios from "axios"
 import {toast} from "react-toastify"
 import { useDispatch } from "react-redux"
 import { setToken } from '../redux/tokenSlice';
+import { hideLoader, showLoader } from '../redux/loaderSlice';
 
 const LoginPage = () => {
 
@@ -24,11 +25,13 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
    try {
+    dispatch(showLoader(true)); // Show Loader before request
     
       const response = await axios.post("https://sathya-fashions-backend.vercel.app/user/login",formData);
+      dispatch(hideLoader(false)); // Show Loader before request
+
       if(response.data.success){
          dispatch(setToken(response.data.token));
-         toast.success(response.data.message);
          navigate("/dashBoard")
       }else{
         console.log(response.data)
