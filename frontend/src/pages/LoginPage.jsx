@@ -25,7 +25,7 @@ const LoginPage = () => {
     e.preventDefault();
    try {
     
-      const response = await axios.post("http://localhost:5000/user/login",formData);
+      const response = await axios.post("https://sathya-fashions-backend.vercel.app/user/login",formData);
       if(response.data.success){
          dispatch(setToken(response.data.token));
          toast.success(response.data.message);

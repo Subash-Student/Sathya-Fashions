@@ -133,7 +133,7 @@ const OrderList = () => {
       try {
       dispatch(showLoader(true)); // Show Loader before request
 
-        const response = await axios.post("http://localhost:5000/order/update-status", formData, {
+        const response = await axios.post("https://sathya-fashions-backend.vercel.app/order/update-status", formData, {
           withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data", 
@@ -172,7 +172,7 @@ const handleDelete = async(id)=>{
   try {
     dispatch(showLoader(true)); // Show Loader before request
     
-    const responsee = await axios.delete(`http://localhost:5000/order/delete/${id}`,{
+    const responsee = await axios.delete(`https://sathya-fashions-backend.vercel.app/order/delete/${id}`,{
       withCredentials: true,
       headers: {
         token
