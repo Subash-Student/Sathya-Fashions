@@ -18,8 +18,8 @@ import {useNavigate} from "react-router-dom"
   const navigate = useNavigate();
 
   useEffect(()=>{
-        dispatch(fetchOrders(token));
-  },[])
+    dispatch(fetchOrders(token));
+},[])
  
 
 

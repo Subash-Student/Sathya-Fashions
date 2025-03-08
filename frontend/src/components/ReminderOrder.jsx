@@ -18,9 +18,9 @@ const ReminderOrders = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-        dispatch(fetchOrders(token));
-  },[])
+  // useEffect(()=>{
+  //       dispatch(fetchOrders(token));
+  // },[])
 
 
   const navigate = useNavigate();

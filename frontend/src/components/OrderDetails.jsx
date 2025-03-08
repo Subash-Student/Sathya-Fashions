@@ -18,9 +18,9 @@ const OrderDetails = () => {
 
  const dispatch = useDispatch()
 
-  useEffect(()=>{
-    dispatch(fetchOrders(token));
-},[token,dispatch])
+//   useEffect(()=>{
+//     dispatch(fetchOrders(token));
+// },[token,dispatch])
 
   const orders = useSelector((state)=>state.orders.orders);
   const order = orders.find((order) => order.order_id === Number(id));

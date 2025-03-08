@@ -34,9 +34,9 @@ const PaymentDetailsPage = () => {
   const orders = useSelector((state)=>state.orders.orders);
   const token = useSelector((state)=>state.token.token)
 
-  useEffect(()=>{
-    dispatch(fetchOrders(token));
-  },[token,dispatch])
+  // useEffect(()=>{
+  //   dispatch(fetchOrders(token));
+  // },[token,dispatch])
 
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");

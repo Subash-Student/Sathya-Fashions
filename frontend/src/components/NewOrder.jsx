@@ -23,9 +23,9 @@ const NewOrder = () => {
  
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    dispatch(fetchOrders(token));
-},[token,dispatch])
+//   useEffect(()=>{
+//     dispatch(fetchOrders(token));
+// },[token,dispatch])
 
   const params = useParams();
   const order_id = params.id;

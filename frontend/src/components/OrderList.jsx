@@ -40,9 +40,9 @@ const OrderList = () => {
 
  const dispatch = useDispatch()
 
-  useEffect(()=>{
-    dispatch(fetchOrders(token));
-},[token,dispatch])
+//   useEffect(()=>{
+//     dispatch(fetchOrders(token));
+// },[token,dispatch])
 
   const orders = useSelector((state)=>state.orders.orders);
  
