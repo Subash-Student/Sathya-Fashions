@@ -194,10 +194,10 @@ const PaymentDetailsPage = () => {
                 <ListItem  style={{display:"flex",justifyContent:'space-between'}} key={payment.order_id} sx={{ mb: 1, p: 1.5, borderBottom: "1px solid #ddd" }}>
                   <Box>
                     <Typography onClick={()=>navigate(`/order/${payment.order_id}`)} fontWeight="bold" color="text.primary">
-                      {payment.customerName} - ₹{payment.totalAmount}
+                    {payment.customerName} - ₹{payment.advanceAmount > 0 ? payment.totalAmount - payment.advanceAmount : payment.totalAmount}
                     </Typography>
                     {payment.paymentStatus === "Advance" && 
-                    <Typography m={0.5} fontSize="small" color="text.secondary">{`Advance : ${payment.advanceAmount} | Remaining : ${payment.totalAmount - payment.advanceAmount}`}</Typography>
+                    <Typography m={0.5} fontSize="small" color="text.secondary">{`Total : ₹ ${payment.totalAmount} | Advance : ₹ ${payment.advanceAmount}`}</Typography>
                     }
                     <Stack direction="row" spacing={1} alignItems="center">
                       <CalendarTodayIcon fontSize="15px" color="action" />
