@@ -10,7 +10,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import {useDispatch} from "react-redux"
 import { setToken } from "../redux/tokenSlice";
 import { setFilterOptions, setOrderFilterOptions } from "../redux/orderSlice";
-
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 const Navbar = () => {
 
   const dispatch = useDispatch()
@@ -98,9 +98,16 @@ const Navbar = () => {
           <ListItemText primary="New Order" />
         </ListItemButton>
 
+        <ListItemButton onClick={() => handleNavigation("/reminderOrders")}>
+          <ListItemIcon>
+            <AccessAlarmIcon sx={{ color: "#ff0000" }} />
+          </ListItemIcon>
+          <ListItemText primary="Reminders " />
+        </ListItemButton>
+
         <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
-          <LogoutIcon sx={{ color: "#D32F2F" }} /> {/* Logout icon with custom color */}
+          <LogoutIcon sx={{ color: "#000000" }} /> {/* Logout icon with custom color */}
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>

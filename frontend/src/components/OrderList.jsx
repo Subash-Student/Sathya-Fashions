@@ -319,7 +319,7 @@ const handleDelete = async(id)=>{
                 #{order.order_id} - {order.customerName}
               </Typography>
               <Typography variant="body2">
-                📅 {order.orderDate} → 📦 {order.deliveryDate}
+              🗓️ {order.orderDate} → 📦 {order.deliveryDate}
               </Typography>
               <Typography variant="body2">
                 💰 ₹{order.totalAmount} |{' '}

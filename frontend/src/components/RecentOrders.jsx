@@ -41,14 +41,14 @@ const RecentOrders = ({ orders ,handleNavigation}) => {
 
      
 
-      {orders.slice(0,5).map((order, index) => (
+      {orders.length > 0 ? orders.slice(0,5).map((order, index) => (
          <Grid item xs={12} key={order.order_id}>
          <Card  sx={{ p: 2.5, borderRadius: 0, boxShadow: 0, position: "relative" }}>
            {/* Three-dot icon */}
            
 
            <Typography onClick={()=>navigate(`/order/${order.order_id}`)} fontWeight="bold">#{order.order_id} - {order.customerName}</Typography>
-           <Typography variant="body2">📅 {order.orderDate} → 📦 {order.deliveryDate}</Typography>
+           <Typography variant="body2">🗓️ {order.orderDate} → 📦 {order.deliveryDate}</Typography>
            <Typography variant="body2">
                 💰 ₹{order.totalAmount} |{' '}
                 {order.paymentStatus === 'Paid'
@@ -66,7 +66,13 @@ const RecentOrders = ({ orders ,handleNavigation}) => {
          </Card>
          <Divider />
        </Grid>
-      ))}
+      )):
+      (
+        <Typography color="textSecondary" textAlign="center" sx={{ p: 5 }}>
+          No Recent Orders.
+        </Typography>
+      )
+      }
     </Box>
   );
 };

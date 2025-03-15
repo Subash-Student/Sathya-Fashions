@@ -55,7 +55,7 @@ const upcomingOrders = orders
                 </Box>
               </Box> */}
       
-      {upcomingOrders.map((order, index) => {
+      {upcomingOrders.lenght > 0 ? upcomingOrders.map((order, index) => {
   const deliveryDate = new Date(order.deliveryDate);
   const daysLeft = Math.ceil((deliveryDate - today) / (1000 * 60 * 60 * 24));
 
@@ -134,7 +134,13 @@ const upcomingOrders = orders
       {index !== upcomingOrders.length - 1 && <Divider />}
     </div>
   );
-})}
+}):  
+(
+  <Typography color="textSecondary" textAlign="center" sx={{ m: 5 }}>
+    No Reminder Orders Today.
+  </Typography>
+)
+}
 
     </Card>
   );
