@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema(
     customerName: { type: String, required: true },
     dressPhoto: { type: String, default: "" },
     voiceNote: { type: String, default: "" },
-    phone: { type: String, required: true },
+    phone: { type: String },
     totalAmount: { type: Number, required: true },
     advanceAmount: { type: Number, default: 0 }, 
     paymentStatus: {
