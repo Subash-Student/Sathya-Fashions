@@ -141,7 +141,7 @@ const fixDate = (date) => {
     
     
      try {
-      dispatch(showLoader(true)); // Show Loader before request
+      dispatch(showLoader()); // Show Loader before request
 
       const response = await axios.post("https://sathya-fashions-backend.vercel.app/order/new-order",FORMDATA,{
         withCredentials:true,
@@ -150,7 +150,7 @@ const fixDate = (date) => {
             token
           }
       });
-      dispatch(hideLoader(true)); // Show Loader before request
+      dispatch(hideLoader()); // Show Loader before request
  
       if(response.data.success){
              toast.success(response.data.message);

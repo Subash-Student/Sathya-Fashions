@@ -131,7 +131,7 @@ const OrderList = () => {
       
     
       try {
-      dispatch(showLoader(true)); // Show Loader before request
+      dispatch(showLoader()); // Show Loader before request
 
         const response = await axios.post("https://sathya-fashions-backend.vercel.app/order/update-status", formData, {
           withCredentials: true,
@@ -140,7 +140,7 @@ const OrderList = () => {
             token
           }
         });
-        dispatch(hideLoader(false)); // Show Loader before request
+        dispatch(hideLoader()); // Show Loader before request
     
         if (response.data.success) {
           toast.success(response.data.message);
@@ -170,7 +170,7 @@ const handleResetFilters = () => {
 const handleDelete = async(id)=>{
   
   try {
-    dispatch(showLoader(true)); // Show Loader before request
+    dispatch(showLoader()); // Show Loader before request
     
     const responsee = await axios.delete(`https://sathya-fashions-backend.vercel.app/order/delete/${id}`,{
       withCredentials: true,
@@ -178,7 +178,7 @@ const handleDelete = async(id)=>{
         token
       }
     },);
-    dispatch(hideLoader(false)); // Show Loader before request
+    dispatch(hideLoader()); // Show Loader before request
 
     if(responsee.data.success){
       toast.success(responsee.data.message);
