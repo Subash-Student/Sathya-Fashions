@@ -55,7 +55,7 @@ console.log(upcomingOrders)
                 </Box>
               </Box> */}
       
-      {upcomingOrders.lenght !== 0 ? upcomingOrders.map((order, index) => {
+      {upcomingOrders.length !== 0 ? upcomingOrders.map((order, index) => {
   const deliveryDate = new Date(order.deliveryDate);
   const daysLeft = Math.ceil((deliveryDate - today) / (1000 * 60 * 60 * 24));
 
