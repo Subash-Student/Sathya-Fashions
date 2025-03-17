@@ -30,7 +30,7 @@ const upcomingOrders = orders
   50% { transform: scale(1); }
   100% { transform: scale(0.8); }
 `;
-
+console.log(upcomingOrders)
   return (
     <Card sx={{ mt: 2, p: 1,boxShadow: 2 }} >
      
@@ -55,7 +55,7 @@ const upcomingOrders = orders
                 </Box>
               </Box> */}
       
-      {upcomingOrders.lenght > 0 ? upcomingOrders.map((order, index) => {
+      {upcomingOrders.lenght !== 0 ? upcomingOrders.map((order, index) => {
   const deliveryDate = new Date(order.deliveryDate);
   const daysLeft = Math.ceil((deliveryDate - today) / (1000 * 60 * 60 * 24));
 
