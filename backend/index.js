@@ -28,7 +28,7 @@ app.use(express.json());
 
 
 const allowedOrigins = [
-  'https://sathya-fashions.vercel.app',
+  'https://sathyafashions.vercel.app/',
   'http://localhost:3000'
 ];
 
