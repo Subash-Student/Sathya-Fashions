@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { TextField, Button, Grid, Card, CardContent, Typography, IconButton, FormControlLabel, Checkbox, Radio, RadioGroup } from "@mui/material";
+import { TextField,Select,MenuItem,DialogActions,DialogContent,DialogTitle,Dialog, Button, Grid, Card, CardContent, Typography, IconButton, FormControlLabel, Checkbox, Radio, RadioGroup } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { PhotoCamera, Mic, Delete } from "@mui/icons-material";
 import { useReactMediaRecorder } from "react-media-recorder";
@@ -14,8 +14,9 @@ import { useParams } from "react-router"
 import { fetchOrders } from "../redux/orderSlice";
 import dayjs from "dayjs";
 import { hideLoader, showLoader } from "../redux/loaderSlice";
+import { Close as CloseIcon } from "@mui/icons-material";
 
-
+const dressOptions = ["Normal", "Lining", "Chudi","Designer", "Blouse","Aari","Machine Embroidary","Frock","Gown","Dhavani","Pattu Pudavai","Uniform"];
 const NewOrder = () => {
 
   const token = useSelector((state) => state.token.token);
@@ -37,13 +38,15 @@ const NewOrder = () => {
     deliveryDate: null,
     reminderDate: null,
     paymentStatus: "Pending",
-    advanceAmount: "",
+    advanceAmount: 0,
     image: null,
     audio: null,
     modelBlouse: false,
     lining: false,
     amount: 0,
     orderStatus: "Pending",
+    selectedDresses: [], 
+    dressQuantities: {},
   });
 
 const [audioBlob, setAudioBlob] = useState(null);
@@ -71,6 +74,19 @@ useEffect(() => {
     orderStatus: order.orderStatus,
       }));
       setAudioURL(order.voiceNote);
+    }
+    if(order.dressQuantities){
+      setFormData((prevFormData)=>({
+        ...prevFormData,
+        dressQuantities:order.dressQuantities,
+        selectedDresses:order.selectedDresses
+      }))
+    }else{
+      setFormData((prevFormData)=>({
+        ...prevFormData,
+        dressQuantities:{},
+        selectedDresses:[]
+      }))
     }
   }
 }, [order_id, orders]);
@@ -124,10 +140,12 @@ const fixDate = (date) => {
     const FORMDATA = new FormData();
 
     for (let key in formData) {
-      if(key === "image")continue;
-      if(key == "orderDate" || key == "reminderDate" || key == "deliveryDate"){
-        FORMDATA.append(`${key}`,fixDate(formData[key].$d));
-      }else{
+      if (key === "image") continue;
+      if (key === "orderDate" || key === "reminderDate" || key === "deliveryDate") {
+        FORMDATA.append(`${key}`, fixDate(formData[key].$d));
+      } else if (key === "selectedDresses" || key === "dressQuantities") {
+        FORMDATA.append(`${key}`, JSON.stringify(formData[key]));
+      } else {
         FORMDATA.append(`${key}`, formData[key]);
       }
     }
@@ -138,21 +156,22 @@ const fixDate = (date) => {
     !!order_id  && FORMDATA.append("order_id",order_id);
       
     
-    
+   
     
      try {
       dispatch(showLoader()); // Show Loader before request
 
-      const response = await axios.post("https://sathya-fashions-backend.vercel.app/order/new-order",FORMDATA,{
+      const response = await axios.post("http://localhost:5000/order/new-order",FORMDATA,{
         withCredentials:true,
           headers: {
             "Content-Type": "multipart/form-data", 
             token
           }
       });
-      dispatch(hideLoader()); // Show Loader before request
+      // Show Loader before request
  
       if(response.data.success){
+        dispatch(hideLoader());
              toast.success(response.data.message);
              if(!!order_id){
               dispatch(fetchOrders(token));
@@ -165,7 +184,7 @@ const fixDate = (date) => {
                   deliveryDate: null,
                   reminderDate: null,
                   paymentStatus: "Pending",
-                  advanceAmount: "",
+                  advanceAmount: 0,
                   image: null,
                   audio: null,
                   modelBlouse: false,
@@ -176,15 +195,62 @@ const fixDate = (date) => {
                 setAudioBlob(null);
                 setAudioURL(null)
              }
+             
       }
 
      } catch (error) {
+      dispatch(hideLoader());
          console.log(error);
          toast.error("Failed to Add new Order")
      }
     
   };
 
+
+  const [selectedDress, setSelectedDress] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleDressChange = (event) => {
+    const selectedValues = event.target.value;
+    const newSelection = selectedValues.find(
+      (value) => !formData.selectedDresses.includes(value)
+    );
+    if (newSelection) {
+      setSelectedDress(newSelection);
+      setQuantity(formData.dressQuantities[newSelection] || "");
+      setOpen(true);
+    }
+    setFormData((prev) => ({
+      ...prev,
+      selectedDresses: selectedValues,
+    }));
+  };
+
+  const handleQuantitySave = () => {
+    setFormData((prev) => ({
+      ...prev,
+      dressQuantities: { ...prev.dressQuantities, [selectedDress]: quantity },
+    }));
+    setOpen(false);
+  };
+
+
+  const handleRemoveDress = (dress) => {
+    setFormData((prev) => {
+      const newDresses = prev.selectedDresses.filter((item) => item !== dress);
+      const newQuantities = { ...prev.dressQuantities };
+      delete newQuantities[dress];
+      return {
+        ...prev,
+        selectedDresses: newDresses,
+        dressQuantities: newQuantities,
+      };
+    });
+  };
+
+console.log(dressOptions)
+console.log(formData)
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -271,6 +337,62 @@ const fixDate = (date) => {
                   label="Model Blouse"
                 />
               </Grid>
+
+            {/* Display Selected Dresses with Quantities */}
+            {formData.selectedDresses.length > 0 && (
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" fontWeight="bold">Selected Dresses</Typography>
+              <Grid container spacing={1}>
+                {formData.selectedDresses.map((dress) => (
+                  <Grid
+                    item
+                    key={dress}
+                    sx={{
+                      height:"35px",
+                      marginTop:'10px',
+                      display: "flex",
+                      alignItems: "center",
+                      backgroundColor: "#e4e4e4",
+                      // borderBottom:"1px solid #313131",
+                      padding: "10px",
+                      borderRadius: "20px",
+                      marginRight: "8px",
+                      color: "#424242",
+                      paddingRight:"0px"
+                    }}
+                  >
+                    <Typography pl={"5px"} fontSize={"15px"}>{dress}: {formData.dressQuantities[dress] || "0"}</Typography>
+                    <IconButton size="small" onClick={() => handleRemoveDress(dress)}>
+                      <CloseIcon sx={{ color: "#d32f2f",padding:"0px",height:"18px" }} />
+                    </IconButton>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          )}
+
+
+                   {/* Dress Selection */}
+          <Grid item xs={12}>
+            <Typography variant="subtitle1" fontWeight="bold">
+              Select Dress Type
+            </Typography>
+            <Select
+              multiple
+              fullWidth
+              value={formData.selectedDresses}
+              onChange={handleDressChange}
+              renderValue={(selected) => selected.join(", ")}
+            >
+              {dressOptions.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </Select>
+          </Grid>
+
+
               {/* Payment Status */}
               <Grid item xs={12}>
                 <Typography variant="subtitle1" fontWeight="bold">Payment Status</Typography>
@@ -361,6 +483,23 @@ const fixDate = (date) => {
               </Grid>
             </Grid>
           </CardContent>
+            {/* Quantity Popup */}
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>{selectedDress}</DialogTitle>
+        <DialogContent>
+          <Typography>Enter quantity:</Typography>
+          <TextField
+            type="number"
+            fullWidth
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={handleQuantitySave} color="primary">Save</Button>
+        </DialogActions>
+      </Dialog>
         </Card>
       </LocalizationProvider>
     </>

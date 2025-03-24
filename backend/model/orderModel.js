@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema(
     voiceNote: { type: String, default: "" },
     phone: { type: String },
     totalAmount: { type: Number, required: true },
-    advanceAmount: { type: Number, default: 0 }, 
+    advanceAmount: { type: Number, default: 0 },
     paymentStatus: {
       type: String,
       enum: ["Pending", "Paid", "Advance"],
@@ -20,11 +20,13 @@ const orderSchema = new mongoose.Schema(
       enum: ["Pending", "Completed", "Cancelled"],
       default: "Pending",
     },
-    withLining: { type: Boolean, default: false }, 
-    modelDress: { type: Boolean, default: false }, 
+    withLining: { type: Boolean, default: false },
+    modelDress: { type: Boolean, default: false },
     orderDate: { type: String, required: true },
-    deliveryDate:{ type: String, required: true },
-    reminderDate: { type: String, required: true }, 
+    deliveryDate: { type: String, required: true },
+    reminderDate: { type: String, required: true },
+    selectedDresses: { type: [String], default: [] }, // Array of dresses
+    dressQuantities: { type: Map, of: Number, default: {} }, // Map of dress names to their quantities
   },
   { timestamps: true }
 );

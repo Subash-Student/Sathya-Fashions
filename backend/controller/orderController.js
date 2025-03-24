@@ -19,7 +19,9 @@ export const newOrder = async (req, res) => {
             lining,
             amount,
             orderStatus,
-            order_id 
+            order_id ,
+            selectedDresses,
+            dressQuantities
         } = req.body;
 
         const user_id = req.id;
@@ -76,14 +78,16 @@ export const newOrder = async (req, res) => {
                     voiceNote: audioPath,
                     phone,
                     totalAmount: amount,
-                    advanceAmount,
+                    advanceAmount:advanceAmount == "null" ? 0 : advanceAmount,
                     paymentStatus,
                     orderStatus,
                     withLining: lining,
                     modelDress: modelBlouse,
                     orderDate,
                     deliveryDate,
-                    reminderDate
+                    reminderDate,
+                    selectedDresses:JSON.parse(selectedDresses),
+                    dressQuantities:JSON.parse(dressQuantities)
                 },
                 { new: true } 
             );
@@ -110,7 +114,9 @@ export const newOrder = async (req, res) => {
             modelDress: modelBlouse,
             orderDate,
             deliveryDate,
-            reminderDate
+            reminderDate,
+            selectedDresses:JSON.parse(selectedDresses),
+            dressQuantities:JSON.parse(dressQuantities)
         });
 
         return res.json({ success: true, message: "New Order Added!", order: newOrder });
