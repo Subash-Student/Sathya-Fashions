@@ -161,7 +161,7 @@ const fixDate = (date) => {
      try {
       dispatch(showLoader()); // Show Loader before request
 
-      const response = await axios.post("http://localhost:5000/order/new-order",FORMDATA,{
+      const response = await axios.post("https://sathya-fashions-backend.vercel.app/order/new-order",FORMDATA,{
         withCredentials:true,
           headers: {
             "Content-Type": "multipart/form-data", 
