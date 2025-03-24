@@ -24,7 +24,7 @@ const OrderDetails = () => {
 
   const orders = useSelector((state)=>state.orders.orders);
   const order = orders.find((order) => order.order_id === Number(id));
-
+ console.log(order)
   if (!order) return <Typography>Order Not Found</Typography>;
 
   const breathing = keyframes`
@@ -51,6 +51,7 @@ const OrderDetails = () => {
       <Typography variant="h6" sx={{ fontWeight: "bold", mb: 0,marginLeft:"50px" }}>
           {order.customerName}
         </Typography>
+        {!!order.phone && 
       <Stack direction="row" alignItems="center" gap={2.5} justifyContent="space-between">
 
         <Typography
@@ -76,6 +77,8 @@ const OrderDetails = () => {
            {order.phone}
         </Typography>
           </Stack>
+
+        }
         </div>
         <IconButton color="primary" onClick={() => navigate(`/newOrder/${order.order_id}`)}>
           <Edit />
@@ -156,6 +159,27 @@ const OrderDetails = () => {
                 }}
               />
           </Stack>
+          {/* Dress Details */}
+<Stack direction="row" alignItems="center" spacing={1}>
+  <Typography variant="body1">
+    <b style={{ color: "#6c6b6b" }}>👚 Dress Details:</b>
+  </Typography>
+</Stack>
+
+<Stack direction="row" flexWrap="wrap" spacing={1} sx={{ mt: 1 }}>
+  {!!order.selectedDresses && order.selectedDresses.map((dress, index) => (
+    <Chip
+      key={index}
+      label={`${dress} (${order.dressQuantities[dress]})`}
+      style={{
+        fontWeight: "bold",
+        backgroundColor: "#E0F7FA",
+        color: "#00796B",
+      }}
+    />
+  ))}
+</Stack>
+
         </Stack>
       </Card>
 

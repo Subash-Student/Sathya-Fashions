@@ -249,8 +249,7 @@ const fixDate = (date) => {
     });
   };
 
-console.log(dressOptions)
-console.log(formData)
+
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -352,12 +351,12 @@ console.log(formData)
                       marginTop:'10px',
                       display: "flex",
                       alignItems: "center",
-                      backgroundColor: "#e4e4e4",
+                      backgroundColor: "#E0F7FA",
                       // borderBottom:"1px solid #313131",
                       padding: "10px",
                       borderRadius: "20px",
                       marginRight: "8px",
-                      color: "#424242",
+                      color: "#555555",
                       paddingRight:"0px"
                     }}
                   >
