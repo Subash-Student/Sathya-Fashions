@@ -8,12 +8,13 @@ export const fetchOrders = createAsyncThunk(
   async (token, { dispatch, rejectWithValue }) => {
     try {
      
+      dispatch(showLoader())
       const response = await axios.get("https://sathya-fashions-backend.vercel.app/order/orders", {
         headers: { token },
         withCredentials: true,
       });
       if(response.status === 200){
-      
+      dispatch(hideLoader())
                
       }
       return response.data.orders;

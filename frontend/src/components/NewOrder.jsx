@@ -169,6 +169,7 @@ const fixDate = (date) => {
           }
       });
       // Show Loader before request
+      dispatch(hideLoader());
  
       if(response.data.success){
         dispatch(hideLoader());
