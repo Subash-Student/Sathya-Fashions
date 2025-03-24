@@ -160,11 +160,13 @@ const OrderDetails = () => {
               />
           </Stack>
           {/* Dress Details */}
+          {!!order.selectedDresses.length > 0 && 
 <Stack direction="row" alignItems="center" spacing={1}>
   <Typography variant="body1">
     <b style={{ color: "#6c6b6b" }}>👚 Dress Details:</b>
   </Typography>
-</Stack>
+</Stack>  
+          }
 
 <Stack direction="row" flexWrap="wrap" spacing={1} sx={{ mt: 1 }}>
   {!!order.selectedDresses && order.selectedDresses.map((dress, index) => (
